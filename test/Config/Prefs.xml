@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PrefsData>
+  <devMode>True</devMode>
+  <logVerbose>False</logVerbose>
+  <pauseOnLoad>True</pauseOnLoad>
+  <testMapSizes>False</testMapSizes>
+  <runInBackground>True</runInBackground>
+  <volumeGame>0.2</volumeGame>
+  <volumeMusic>0</volumeMusic>
+</PrefsData>

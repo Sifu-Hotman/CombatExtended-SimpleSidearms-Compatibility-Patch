@@ -1,0 +1,55 @@
+using CombatExtended;
+using HarmonyLib;
+using PeteTimesSix.SimpleSidearms.Utilities;
+using RimWorld;
+using Verse;
+
+namespace CESimpleSidearmsCompat.Patches
+{
+    /// <summary>
+    /// Axis 11: SS classifies weapons as EMP/dangerous from the verb's default projectile;
+    /// under CE the actual projectile comes from the loaded ammo. Re-evaluate using the
+    /// current CE projectile when the weapon has an ammo comp.
+    /// </summary>
+    [HarmonyPatch(typeof(GettersFilters), nameof(GettersFilters.isEMPWeapon))]
+    public static class GettersFilters_isEMPWeapon_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(ThingWithComps weapon, ref bool __result)
+        {
+            if (weapon?.TryGetComp<CompAmmoUser>() == null)
+            {
+                return;
+            }
+            ProjectileProperties projectile = CompatUtil.CurrentProjectile(weapon)?.projectile;
+            if (projectile != null)
+            {
+                __result = projectile.damageDef == DamageDefOf.EMP;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(GettersFilters), nameof(GettersFilters.isDangerousWeapon))]
+    public static class GettersFilters_isDangerousWeapon_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(ThingWithComps weapon, ref bool __result)
+        {
+            if (__result || weapon?.TryGetComp<CompAmmoUser>() == null)
+            {
+                return;
+            }
+            ProjectileProperties projectile = CompatUtil.CurrentProjectile(weapon)?.projectile;
+            if (projectile == null)
+            {
+                return;
+            }
+            // Incendiary or explosive CE ammo: keep it out of automatic swaps, same intent
+            // as SS's vanilla "dangerous" filter.
+            if (projectile.damageDef == DamageDefOf.Flame || projectile.explosionRadius > 0.1f)
+            {
+                __result = true;
+            }
+        }
+    }
+}
