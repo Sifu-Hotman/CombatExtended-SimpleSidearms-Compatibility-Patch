@@ -20,18 +20,18 @@ both mods work as their authors intended. Feature modules build on it:
 
 ## What it fixes
 
-- Sidearm carry limits now respect CE's inventory system (weight *and* bulk).
-- Weapon ranking uses real CE damage numbers, so pawns actually pick the better gun.
-- Pawns never auto-switch to a gun that has no ammo.
-- Enemies spawn with their sidearms loaded and carrying spare ammo.
-- Switching weapons no longer interrupts a reload partway through.
-- Drawing a melee sidearm when attacked in melee works again.
-- Mid-fight auto-switching to a better-suited gun works again.
-- Firing a single-use launcher leaves the pawn holding their preferred backup, not fists.
+- Sidearm carry limits now respect CE's inventory system (weight *and* bulk). *(#1)*
+- Weapon ranking uses real CE damage numbers, so pawns actually pick the better gun. *(#2)*
+- Pawns never auto-switch to a gun that has no ammo. *(#3)*
+- Enemies spawn with their sidearms loaded and carrying spare ammo. *(#4)*
+- Switching weapons no longer interrupts a reload partway through. *(#5)*
+- Drawing a melee sidearm when attacked in melee works again. *(#6)*
+- Mid-fight auto-switching to a better-suited gun works again. *(#7)*
+- Firing a single-use launcher leaves the pawn holding their preferred backup, not fists. *(#8)*
 - When a gun runs dry or is destroyed, the replacement follows your sidearm
-  preferences instead of CE's guess.
-- CE loadout enforcement no longer strips remembered sidearms out of inventories.
-- EMP and incendiary weapon detection matches the ammo actually loaded.
+  preferences instead of CE's guess. *(#9)*
+- CE loadout enforcement no longer strips remembered sidearms out of inventories. *(#10)*
+- EMP and incendiary weapon detection matches the ammo actually loaded. *(#11)*
 
 ## What it fixes (for nerds)
 
