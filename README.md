@@ -1,5 +1,8 @@
 # CombatExtended-SimpleSidearms Compatibility Patch
 
+[![Combat Extended Compatible](Media/Badge_CE_compatible.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2890901044)
+![CE + Simple Sidearms Compatibility Suite](Media/Badge_Suite.png)
+
 RimWorld 1.6 compatibility mod making [Combat Extended](https://github.com/CombatExtended-Continued/CombatExtended)
 and [Simple Sidearms](https://github.com/PeteTimesSix/SimpleSidearms) work together.
 
@@ -89,3 +92,6 @@ ln -s "$(pwd)" ~/.local/share/Steam/steamapps/common/RimWorld/Mods/CESimpleSidea
 - CE is licensed CC BY-NC-SA 4.0; Simple Sidearms has no published license. This
   mod links against both at build time and reimplements small SS behaviors
   (axes 6/7) against CE types; credit to PeteTimesSix and the CE team.
+- The "Combat Extended Compatible" badge is the CE team's own asset
+  (`Media/` in their repo), used as they recommend for compatible mods.
+  `Badge_Suite.png` is this suite's mark, shared by all family repos.
