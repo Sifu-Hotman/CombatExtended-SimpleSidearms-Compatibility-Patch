@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-    <name>Combat Extended + Simple Sidearms Compatibility</name>
+    <name>CombatExtended-SimpleSidearms Compatibility Patch</name>
     <author>eebette</author>
     <packageId>eebette.CESimpleSidearmsCompat</packageId>
     <supportedVersions>
