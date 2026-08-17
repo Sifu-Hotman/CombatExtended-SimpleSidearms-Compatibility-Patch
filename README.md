@@ -15,7 +15,7 @@ used as a reference only — no code reused).
 This is the core, repair-only patch of a small family — it adds no behavior, only makes
 both mods work as their authors intended. Feature modules build on it:
 
-- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) — doctrine projection and ammo sustainment bridging CE loadouts with SS memory
+- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) — loadout-weapons-as-sidearms and ammo sustainment bridging CE loadouts with SS memory
 - Compatibility Module - Tactics (planned) — smarter weapon-choice triggers
 
 ## What it fixes
