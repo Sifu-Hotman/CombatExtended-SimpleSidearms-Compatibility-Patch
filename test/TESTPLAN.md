@@ -1,7 +1,41 @@
-sd# Manual test plan
+# Test plan
 
 One staged save per cluster of axes. Stage once with dev tools, save, then every
 code iteration is: rebuild → relaunch → load save (assemblies don't hot-reload).
+
+## Automated acceptance runs
+
+Most of this plan runs unattended via `test/run-assert.sh <scenario> <save>`
+(in-game assertion runner in `test/StagingMod/Source/CETestRunner.cs`, results as
+`test/SaveData/test-results-<scenario>.json`):
+
+```
+./test/run-test.sh stage                       # regenerate CETEST saves (kill after letter)
+./test/run-assert.sh cetest1 CETEST-1-pickup
+./test/run-assert.sh cetest2 CETEST-2-selection
+./test/run-assert.sh cetest3 CETEST-3-combat
+./test/run-assert.sh cetest4 CETEST-4-generation
+```
+
+Full green pass recorded 2026-08-17 (all four scenarios, zero exceptions in logs).
+Coverage highlights beyond the manual checklist: axis-5 direct unit hit (SS switch
+entry point invoked DURING a live CE reload job — reload survived), axis-8 full
+chain (rocket actually fired at a ground cell, consumption → SS-preference
+re-equip), axis-10 hold-record lifecycle + dedup, axis-4 per-raider capacity audit
++ orphan-ammo scan + generator idempotence. The Loadouts module's derivations are
+disabled in-memory for these runs, so they exercise the compat patch alone.
+
+Findings worth knowing (none are compat-patch defects):
+- **SS upstream quirk:** `CompSidearmMemory.InformOfAddedSidearm` has no duplicate
+  guard (the dedup is commented out upstream) — repeated calls grow
+  RememberedWeapons. The patch's own hold records dedup correctly regardless.
+  Candidate for the SS upstream report batch (issue #5).
+- **SS drafted-weapon-selection skips manual-use weapons:** drafting a pawn whose
+  primary is a one-use launcher holsters it in favor of a sidearm. SS-native
+  (vanilla-visible too), amplified by CE's launcher availability.
+- Test-harness scenario design must keep hostiles away from behavior-under-test
+  pawns (return fire / melee charges corrupt phases) and target ground cells for
+  AOE weapons.
 
 ## Dev-tool crib sheet
 
