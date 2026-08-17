@@ -20,6 +20,21 @@ both mods work as their authors intended. Feature modules build on it:
 
 ## What it fixes
 
+- Sidearm carry limits now respect CE's inventory system (weight *and* bulk).
+- Weapon ranking uses real CE damage numbers, so pawns actually pick the better gun.
+- Pawns never auto-switch to a gun that has no ammo.
+- Enemies spawn with their sidearms loaded and carrying spare ammo.
+- Switching weapons no longer interrupts a reload partway through.
+- Drawing a melee sidearm when attacked in melee works again.
+- Mid-fight auto-switching to a better-suited gun works again.
+- Firing a single-use launcher leaves the pawn holding their preferred backup, not fists.
+- When a gun runs dry or is destroyed, the replacement follows your sidearm
+  preferences instead of CE's guess.
+- CE loadout enforcement no longer strips remembered sidearms out of inventories.
+- EMP and incendiary weapon detection matches the ammo actually loaded.
+
+## What it fixes (for nerds)
+
 | # | Problem under CE | Fix |
 |---|------------------|-----|
 | 1 | SS pickup checks ignore CE **bulk** (weight is already CE-aware via CE's `MassUtility.Capacity` patch) | Bulk check appended to `StatCalculator.CanPickupSidearmType` (also gates NPC sidearm generation) |
