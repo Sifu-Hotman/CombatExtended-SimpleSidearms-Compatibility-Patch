@@ -1,4 +1,4 @@
-# Combat Extended + Simple Sidearms Compatibility
+# CombatExtended-SimpleSidearms Compatibility Patch
 
 RimWorld 1.6 compatibility mod making [Combat Extended](https://github.com/CombatExtended-Continued/CombatExtended)
 and [Simple Sidearms](https://github.com/PeteTimesSix/SimpleSidearms) work together.
@@ -9,6 +9,14 @@ Sidearms scores and swaps weapons using vanilla stats and vanilla verb hooks.
 This mod bridges the eleven incompatibility axes found by cross-reading both
 codebases (and the behavior of Ghosty's deprecated `SidearmsCECompatibility`,
 used as a reference only — no code reused).
+
+## The suite
+
+This is the core, repair-only patch of a small family — it adds no behavior, only makes
+both mods work as their authors intended. Feature modules build on it:
+
+- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) — doctrine projection and ammo sustainment bridging CE loadouts with SS memory
+- Compatibility Module - Tactics (planned) — smarter weapon-choice triggers
 
 ## What it fixes
 
