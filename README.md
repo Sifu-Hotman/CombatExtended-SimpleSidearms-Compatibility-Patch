@@ -1,7 +1,7 @@
 # CombatExtended-SimpleSidearms Compatibility Patch
 
 [![Combat Extended Compatible](Media/Badge_CE_compatible.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2890901044)
-![CE + Simple Sidearms Compatibility Suite](Media/Badge_Suite.png)
+![CE + Simple Sidearms Compatibility Patch](Media/Badge_Patch.png)
 
 RimWorld 1.6 compatibility mod making [Combat Extended](https://github.com/CombatExtended-Continued/CombatExtended)
 and [Simple Sidearms](https://github.com/PeteTimesSix/SimpleSidearms) work together.
