@@ -121,9 +121,44 @@ def render(path, subtitle, accent=None, rifle=None):
     print("wrote", path)
 
 
+def render_preview(path, subtitle, accent, rifle):
+    """512x512 Workshop preview: big emblem over stacked title lines."""
+    P = 4
+    W = H = 512 * P
+    img = Image.new("RGBA", (W, H), (12, 12, 12, 255))
+    d = ImageDraw.Draw(img)
+    cx, cy, r = 256 * P, 190 * P, 140 * P
+    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=BLACK, outline=accent, width=8 * P)
+
+    def paste_glyph(m, gx, gy, target_w):
+        sc = target_w / m.width
+        g = m.resize((int(m.width * sc), int(m.height * sc)), Image.LANCZOS)
+        img.paste(WHITE, (int(gx - g.width / 2), int(gy - g.height / 2)), g)
+
+    paste_glyph(rifle, cx, 150 * P, 176 * P)
+    dd = ImageDraw.Draw(img)
+    draw_pistol(dd, (256 - 54) * P, 208 * P, 1.75 * P, flip=True)
+
+    f1 = ImageFont.truetype(FONT, 34 * P)
+    f2 = ImageFont.truetype(FONT, 30 * P)
+    f3 = ImageFont.truetype(FONT, 22 * P)
+    for text, font, y, color in [
+        ("COMBAT EXTENDED", f1, 360 * P, WHITE),
+        ("+ SIMPLE SIDEARMS", f2, 402 * P, WHITE),
+        (subtitle, f3, 452 * P, accent),
+    ]:
+        w = dd.textlength(text, font=font)
+        dd.text(((W - w) / 2, y), text, font=font, fill=color)
+
+    img.resize((512, 512), Image.LANCZOS).save(path)
+    print("wrote", path)
+
+
 if __name__ == "__main__":
     rifle = extract_rifle()
     render(os.path.join(HERE, "Badge_Suite.png"), "COMPATIBILITY SUITE", None, rifle)
     render(os.path.join(HERE, "Badge_Patch.png"), "COMPATIBILITY PATCH", (109, 143, 60, 255), rifle)
     render(os.path.join(HERE, "Badge_Loadouts.png"), "LOADOUTS MODULE", (217, 154, 43, 255), rifle)
     render(os.path.join(HERE, "Badge_Tactics.png"), "TACTICS MODULE", (176, 65, 62, 255), rifle)
+    render_preview(os.path.join(HERE, "..", "About", "Preview.png"),
+                   "COMPATIBILITY PATCH", (109, 143, 60, 255), rifle)

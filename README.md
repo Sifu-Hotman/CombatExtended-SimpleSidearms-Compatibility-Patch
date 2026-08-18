@@ -95,9 +95,13 @@ ln -s "$(pwd)" ~/.local/share/Steam/steamapps/common/RimWorld/Mods/CESimpleSidea
   urgent pickup) — those are CE-tactical decisions, not preference calls.
 - SS-remembered weapons are exempt from CE loadout drops by design: SS memory is
   explicit user intent. Remove the sidearm from SS memory to let CE drop it.
+- This mod's own code is [MIT-licensed](LICENSE) — compatible with contributing
+  portions into CE (CC BY-NC-SA) since we hold the copyright.
 - CE is licensed CC BY-NC-SA 4.0; Simple Sidearms has no published license. This
-  mod links against both at build time and reimplements small SS behaviors
-  (axes 6/7) against CE types; credit to PeteTimesSix and the CE team.
+  mod links against both at build time (never redistributes either) and
+  reimplements small SS behaviors (axes 6/7) against CE types; Ghosty's
+  deprecated patch was a behavioral reference only, no code reused. Credit to
+  PeteTimesSix and the CE team.
 - The "Combat Extended Compatible" badge is the CE team's own asset
   (`Media/` in their repo), used as they recommend for compatible mods.
   `Badge_Suite.png` is this suite's mark, shared by all family repos.

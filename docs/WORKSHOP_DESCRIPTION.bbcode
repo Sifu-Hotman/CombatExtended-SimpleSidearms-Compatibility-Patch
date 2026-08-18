@@ -1,0 +1,40 @@
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2890901044][img]https://raw.githubusercontent.com/CombatExtended-Continued/CombatExtended/master/Media/Badge_CE_compatible.png[/img][/url] [img]https://raw.githubusercontent.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch/master/Media/Badge_Suite.png[/img] [img]https://raw.githubusercontent.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch/master/Media/Badge_Patch.png[/img]
+
+Makes [b]Combat Extended[/b] and [b]Simple Sidearms[/b] actually work together. Both mods ship zero knowledge of each other; this patch repairs every seam found by cross-reading both codebases — repair only, no new behavior, both mods work as their authors intended.
+
+[h1]What it fixes[/h1]
+[list]
+[*]Sidearm carry limits now respect CE's inventory system (weight [i]and[/i] bulk).
+[*]Weapon ranking uses real CE damage numbers, so pawns actually pick the better gun.
+[*]Pawns never auto-switch to a gun that has no ammo.
+[*]Enemies spawn with their sidearms loaded and carrying spare ammo.
+[*]Switching weapons no longer interrupts a reload partway through.
+[*]Drawing a melee sidearm when attacked in melee works again.
+[*]Mid-fight auto-switching to a better-suited gun works again.
+[*]Firing a single-use launcher leaves the pawn holding their preferred backup, not fists.
+[*]When a gun runs dry or is destroyed, the replacement follows your sidearm preferences instead of CE's guess.
+[*]CE loadout enforcement no longer strips remembered sidearms out of inventories.
+[*]EMP and incendiary weapon detection matches the ammo actually loaded.
+[/list]
+
+Technical details per fix: see the [url=https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch]GitHub README[/url] ("What it fixes (for nerds)").
+
+[h1]Load order[/h1]
+Harmony → Combat Extended → Simple Sidearms → this mod (declared in About.xml; the game sorts it for you).
+
+[h1]Good to know[/h1]
+[list]
+[*]Safe to add or remove mid-save.
+[*]SS-remembered weapons are exempt from CE loadout drops by design — SS memory is explicit player intent. Forget the sidearm to let CE drop it.
+[*][b]Melee Animation[/b]: animated execution kills bypass the melee-attack hook, so the CQC auto-draw doesn't trigger during those — everything else works.
+[*]On a fresh Simple Sidearms install its "Basic" settings preset auto-applies; the patch works with any preset.
+[/list]
+
+[h1]The suite[/h1]
+This is the core, repair-only patch. Companion modules build on it:
+[b]Compatibility Module - Loadouts[/b] — CE loadouts and SS memory as one mental model (loadout weapons auto-remembered, ammo sustainment).
+[b]Compatibility Module - Tactics[/b] — planned; smarter weapon-choice triggers.
+
+[h1]Links & credit[/h1]
+Source, issues, technical docs: [url=https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch]GitHub[/url]. MIT-licensed.
+All credit for the two great mods this bridges: the CE team and PeteTimesSix. The CE-compatible badge and emblem art derive from CE's own media (CC BY-NC-SA).

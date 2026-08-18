@@ -61,7 +61,23 @@ toolchain.
    gh release create vX.Y.Z --title "vX.Y.Z" --notes "<axes changed, upstream versions tested>"
    ```
 
-   Version semantics: see the versioning & save-compat policy (issue #4).
+   Version semantics: see "Versioning & save compatibility" below.
 
 7. **Workshop upload** — per the publishing checklist (issue #3) once the mod
    is on the Workshop; the badge BBCode for the listing is recorded there.
+
+## Versioning & save compatibility
+
+Semver tags, `v1.0.0` at first Workshop release.
+
+Two guarantees, both currently true and both **binding on every future change**:
+
+- **Safe to ADD mid-save.** All patches are lazy and save-agnostic; the axis-10
+  hold-record sync happens lazily from live SS memory, nothing needs to exist
+  in the save beforehand.
+- **Safe to REMOVE mid-save.** The only persistent footprint is CE HoldRecords,
+  which CE purges/tolerates natively; SS memory is SS's own data either way.
+
+A change that would break either guarantee must bump the **major** version and
+document the migration in the release notes. Patch/minor releases must state
+which upstream CE/SS versions they were tested against.
