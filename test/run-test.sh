@@ -16,6 +16,9 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 RIMWORLD="$HOME/.local/share/Steam/steamapps/common/RimWorld/RimWorldLinux"
+# GS_WRAP: launch inside gamescope's nested compositor — immune to the desktop's
+# display state (owner gaming via Proton, mode-list churn, XF86VidMode crashes).
+GS=(gamescope -W 1600 -H 900 --)
 SAVEDATA="$REPO/test/SaveData"
 
 ARGS=("$@")
@@ -37,4 +40,4 @@ for f in ModsConfig.xml Prefs.xml; do
     fi
 done
 
-exec "$RIMWORLD" -savedatafolder="$SAVEDATA" "${ARGS[@]}"
+exec "${GS[@]}" "$RIMWORLD" -savedatafolder="$SAVEDATA" "${ARGS[@]}"
