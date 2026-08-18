@@ -185,3 +185,13 @@ if __name__ == "__main__":
     render(os.path.join(HERE, "Badge_Tactics.png"), "TACTICS MODULE", (176, 65, 62, 255), rifle)
     render_preview(os.path.join(HERE, "..", "About", "Preview.png"),
                    "COMPATIBILITY PATCH", (109, 143, 60, 255), rifle)
+    # Sibling repos (personal tooling — skipped when not checked out)
+    loadouts_about = os.path.expanduser("~/Projects/CESidearmsSupply/About")
+    if os.path.isdir(loadouts_about):
+        render_preview(os.path.join(loadouts_about, "Preview.png"),
+                       "LOADOUTS MODULE", (217, 154, 43, 255), rifle)
+    tactics_about = os.path.expanduser(
+        "~/Projects/CombatExtended-SimpleSidearms-Compatibility-Tactics/About")
+    if os.path.isdir(tactics_about):
+        render_preview(os.path.join(tactics_about, "Preview.png"),
+                       "TACTICS MODULE", (176, 65, 62, 255), rifle)
