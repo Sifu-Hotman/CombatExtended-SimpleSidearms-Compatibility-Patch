@@ -73,6 +73,11 @@ The build references the workshop DLLs at
 uses [Krafs.Publicizer](https://github.com/krafs/Publicizer) for access to
 internal members of both mods. Output lands in `Assemblies/`.
 
+**No CI**: the compile references live in local Steam Workshop folders and can't
+be vendored (CE is CC BY-NC-SA, Simple Sidearms has no license), so releases are
+manual local builds with the built DLL committed in `Assemblies/` — cloning the
+repo yields a working mod without a toolchain. Full process: [RELEASING.md](RELEASING.md).
+
 ## Installing locally
 
 Symlink (or copy) this folder into RimWorld's `Mods` directory:
