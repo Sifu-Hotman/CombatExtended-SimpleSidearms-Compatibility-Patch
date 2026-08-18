@@ -21,9 +21,22 @@ WHITE = (255, 255, 255, 255)
 
 
 def extract_rifle():
-    src = Image.open(CE_BADGE).convert("RGBA")
+    """Rifle glyph from CE's badge, vector-sharp: rasterize the SVG at 8x via
+    cairosvg (falls back to the 300px PNG if cairosvg is unavailable)."""
+    try:
+        import io
+        import cairosvg
+        buf = io.BytesIO()
+        cairosvg.svg2png(url=os.path.join(HERE, "Badge_CE_compatible.svg"),
+                         write_to=buf, scale=8)
+        buf.seek(0)
+        src = Image.open(buf).convert("RGBA")
+        Z = 8
+    except ImportError:
+        src = Image.open(CE_BADGE).convert("RGBA")
+        Z = 1
     px = src.load()
-    pts = [(x, y) for x in range(105) for y in range(100)
+    pts = [(x, y) for x in range(105 * Z) for y in range(100 * Z)
            if px[x, y][0] > 200 and px[x, y][3] > 200]
     ptset = set(pts)
     seen = set()
@@ -45,8 +58,17 @@ def extract_rifle():
                         seen.add(n)
                         q.append(n)
         clusters.append(comp)
-    clusters.sort(key=len, reverse=True)
-    comp = clusters[1]  # rifle (largest is the sombrero skull)
+
+    # The rifle is the big glyph in the circle's lower-left quadrant (the
+    # largest cluster overall is the sombrero skull).
+    def is_rifle(comp):
+        xs = [p[0] for p in comp]
+        ys = [p[1] for p in comp]
+        cx = (min(xs) + max(xs)) / 2
+        cy = (min(ys) + max(ys)) / 2
+        return cx < 50 * Z and cy > 40 * Z
+
+    comp = max((c for c in clusters if is_rifle(c)), key=len)
     xs = [p[0] for p in comp]
     ys = [p[1] for p in comp]
     x0, y0 = min(xs), min(ys)
@@ -54,7 +76,8 @@ def extract_rifle():
     mp = m.load()
     for x, y in comp:
         mp[x - x0, y - y0] = 255
-    m = m.resize((m.width * 8, m.height * 8), Image.NEAREST)
+    if Z == 1:
+        m = m.resize((m.width * 8, m.height * 8), Image.NEAREST)
     m = m.rotate(45, expand=True, resample=Image.BICUBIC)
     m = m.transpose(Image.FLIP_LEFT_RIGHT).point(lambda v: 255 if v > 110 else 0)
     return m.crop(m.getbbox())
