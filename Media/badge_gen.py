@@ -185,7 +185,18 @@ if __name__ == "__main__":
     render(os.path.join(HERE, "Badge_Tactics.png"), "TACTICS MODULE", (176, 65, 62, 255), rifle)
     render_preview(os.path.join(HERE, "..", "About", "Preview.png"),
                    "COMPATIBILITY PATCH", (109, 143, 60, 255), rifle)
-    # Sibling repos (personal tooling — skipped when not checked out)
+    # Distribute the full badge set to sibling repos so their READMEs can
+    # cross-link with relative paths (personal tooling — skipped when absent).
+    import shutil
+    badge_set = ["Badge_Suite.png", "Badge_Patch.png", "Badge_Loadouts.png", "Badge_Tactics.png"]
+    for sibling in ("~/Projects/CESidearmsSupply",
+                    "~/Projects/CombatExtended-SimpleSidearms-Compatibility-Tactics"):
+        media = os.path.expanduser(sibling + "/Media")
+        if os.path.isdir(media):
+            for name in badge_set:
+                shutil.copy(os.path.join(HERE, name), os.path.join(media, name))
+            print("distributed badges ->", media)
+
     loadouts_about = os.path.expanduser("~/Projects/CESidearmsSupply/About")
     if os.path.isdir(loadouts_about):
         render_preview(os.path.join(loadouts_about, "Preview.png"),

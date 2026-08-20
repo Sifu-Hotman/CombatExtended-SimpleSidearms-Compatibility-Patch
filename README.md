@@ -19,8 +19,15 @@ used as a reference only — no code reused).
 This is the core, repair-only patch of a small family — it adds no behavior, only makes
 both mods work as their authors intended. Feature modules build on it:
 
-- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) — loadout-weapons-as-sidearms and ammo sustainment bridging CE loadouts with SS memory
-- Compatibility Module - Tactics (planned) — smarter weapon-choice triggers
+[![Compatibility Module - Loadouts](Media/Badge_Loadouts.png)](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts)
+
+CE loadouts and Simple Sidearms memory as one mental model: loadout weapons are
+auto-remembered as sidearms, and ammo sustainment rides CE's own "Ad hoc" switch.
+
+[![Compatibility Module - Tactics](Media/Badge_Tactics.png)](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics)
+
+Combat-time weapon choice: reload-abort when threatened, target-aware ammo and
+armor-aware melee scoring, ammo-depth tiebreak.
 
 ## What it fixes
 
