@@ -3,6 +3,30 @@
 One staged save per cluster of axes. Stage once with dev tools, save, then every
 code iteration is: rebuild → relaunch → load save (assemblies don't hot-reload).
 
+## Benchmark
+
+`./test/run-bench.sh [label]` loads CETEST-2-selection and times the call Simple Sidearms
+makes once per tick per warming-up pawn (`findBestRangedWeapon`, on a colonist carrying four
+ranged CE weapons with a hostile at 10 cells), 20,000 iterations x 5 rounds, best-of. Two
+arms run in one process — patches active, then `UnpatchAll` for stock SS — so the save, map,
+pawn and JIT state are identical. Results land in `test/SaveData/bench-results-<label>.json`.
+
+Only same-run `patched - stock` deltas are meaningful: the absolute baseline drifts 47-56 us
+between runs on the same machine. The runner resets the patch's per-tick memo before every
+timed iteration, in both arms, because the game always calls this path with a cold cache and
+a tight loop inside one tick would otherwise measure a warm one.
+
+Measured 2026-08-20 (CE 16.7.3.0, SS v1.6), selection overhead vs stock SS, and its cost at
+twenty simultaneously warming-up pawns against a 60fps frame:
+
+| build | overhead per call | % of frame @ 20 pawns |
+|---|---|---|
+| before the per-tick memo | +27.5 us | 3.30% |
+| current | +16.2 us | 1.95% |
+
+Combat Extended's convention is to benchmark inside RimWorld rather than in a desktop
+harness (perkinslr, PR #4029) — hence the in-game runner rather than a unit benchmark.
+
 ## Automated acceptance runs
 
 Most of this plan runs unattended via `test/run-assert.sh <scenario> <save>`
