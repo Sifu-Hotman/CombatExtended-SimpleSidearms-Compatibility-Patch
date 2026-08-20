@@ -41,23 +41,29 @@ These individual feature modules were made to improve the experience between the
 ## FAQ
 
 **CE compatible?**
+
 I'm not answering that.
 
 **Can I add or remove it mid-save?**
+
 Both are safe. It writes nothing of its own to a save - no settings, no records, no scribed data. Remove it and you are left with plain CE and plain Simple Sidearms.
 
 **Does it change balance?**
+
 It makes the game easier in the sense that 2 core combat mods are no longer broken in your save.
 
 But in the traditional sense, no.
 
 **Why is my pawn keeping a sidearm that isn't in its CE loadout?**
+
 Pawns won't automatically drop any weapon Simple Sidearms remembers. Forget it in the SS gizmo to let CE drop it.
 
 **Does it work with Melee Animation?**
+
 Yes, with one known gap: animated execution kills bypass the melee-attack hook, so the CQC melee auto-draw doesn't trigger during those. Everything else works.
 
 **AI?**
+
 This mod was engineered with the help of an AI Coding Assistant (Claude Code, Fable 5, Max effort). The amount of researching and deep-diving the compatibility interfaces of both mods would have been insurmountable without it.
 
 I ask that if you have unconstructive feedback regarding the usage of AI while developing this mod, that it remains outside of this community space. Thank you.
