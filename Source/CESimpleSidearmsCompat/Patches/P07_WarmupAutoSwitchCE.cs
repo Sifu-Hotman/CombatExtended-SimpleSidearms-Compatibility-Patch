@@ -39,10 +39,22 @@ namespace CESimpleSidearmsCompat.Patches
             {
                 return;
             }
+            if (pawn.equipment?.Primary == null)
+            {
+                // trySwapToMoreAccurateRangedWeapon scores against the equipped weapon and
+                // dereferences it without a guard. Verb_ShootCE also covers ability and
+                // hediff verbs, which can warm up with nothing equipped.
+                return;
+            }
 
-            float aimingDelayFactor = pawn.GetStatValue(StatDefOf.AimingDelayFactor, true);
-            int warmupTicks = (__instance.verb.verbProps.warmupTime * aimingDelayFactor).SecondsToTicks();
-            if (warmupTicks <= 0 || __instance.ticksLeft / (float)warmupTicks < 1f - SSCore.Settings.RangedCombatAutoSwitchMaxWarmup)
+            // Reconstruct this shot's warmup window from the stance itself. verbProps.warmupTime
+            // is the wrong denominator twice over: CE overrides the virtual WarmupTime that sized
+            // the stance (ammo and equipment modifiers), and Verb_ShootCE.RecalculateWarmupTicks
+            // shrinks ticksLeft on every repeat shot at the same target (FasterRepeatShots, on by
+            // default) — which used to put every shot after the first below the threshold forever.
+            int elapsedTicks = Find.TickManager.TicksGame - __instance.startedTick;
+            int windowTicks = elapsedTicks + __instance.ticksLeft;
+            if (windowTicks <= 0 || __instance.ticksLeft / (float)windowTicks < 1f - SSCore.Settings.RangedCombatAutoSwitchMaxWarmup)
             {
                 return;
             }
