@@ -10,15 +10,6 @@ This mod patches core compatibility issues but doesn't bridge AI behaviors or UI
 
 Inspired by the [discontinued mod by Ghosty](https://steamcommunity.com/sharedfiles/filedetails/?id=3694067502), I decompiled that mod and searched *even harder* for incompatibilities between the mods.
 
-## The suite
-
-This is the core, repair-only patch — it adds no behavior, only makes both mods work as originally intended.
-
-These individual feature modules were made to improve the experience between the 2 mods: sidearm-aware CE AI tweaks, and sidearm-aware CE loadout handling.
-
-- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) — loadout-weapons-as-sidearms and ammo sustainment bridging CE loadouts with SS memory
-- [Compatibility Module - Tactics](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics) — smarter weapon-choice triggers
-
 ## Fixes
 
 - Sidearm carry limits now respect CE's inventory system (weight *and* bulk). *(#1)*
@@ -37,6 +28,15 @@ These individual feature modules were made to improve the experience between the
 ## Load order
 
 > Harmony → Combat Extended → Simple Sidearms → this mod.
+ 
+## The suite
+
+This is the core, repair-only patch — it adds no behavior, only makes both mods work as originally intended.
+
+These individual feature modules were made to improve the experience between the 2 mods: sidearm-aware CE AI tweaks, and sidearm-aware CE loadout handling.
+
+- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) — loadout-weapons-as-sidearms and ammo sustainment bridging CE loadouts with SS memory
+- [Compatibility Module - Tactics](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics) — smarter weapon-choice triggers
 
 ## FAQ
 
