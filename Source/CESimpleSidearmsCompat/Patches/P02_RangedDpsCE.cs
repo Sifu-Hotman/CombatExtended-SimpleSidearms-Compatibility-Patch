@@ -46,6 +46,16 @@ namespace CESimpleSidearmsCompat.Patches
     [HarmonyPatch(typeof(StatCalculator), nameof(StatCalculator.RangedDPS))]
     public static class StatCalculator_RangedDPS_Patch
     {
+        /// <summary>CE caps the shooting-accuracy term here (Verb_LaunchProjectileCE.ShootingAccuracy).</summary>
+        internal const float MaxShootingAccuracy = 4.5f;
+
+        /// <summary>
+        /// Stand-in range for the distance-free scoring path, which SS uses when no target is
+        /// known. SS averaged the weapon's short/medium/long accuracy stats there; this plays
+        /// the same role for CE weapons, which have those stats stripped.
+        /// </summary>
+        internal const float NoTargetReferenceDistance = 20f;
+
         [HarmonyPrefix]
         public static bool Prefix(ThingWithComps weapon, float speedBias, float averageSpeed, float distance, ref float __result)
         {
@@ -71,16 +81,27 @@ namespace CESimpleSidearmsCompat.Patches
         }
 
         /// <summary>
-        /// Distance-dependent hit proxy from CE's accuracy stats (spread + sway = angular
-        /// error, converted to lateral miss distance at range). Not CE's real ballistics —
-        /// just enough distance falloff that SS ranks a shotgun above a sniper up close and
-        /// the reverse at range, mirroring the role vanilla hit-chance plays in SS's formula.
+        /// Distance-dependent hit proxy from CE's accuracy stats, converted to lateral miss
+        /// distance at range. Not CE's real ballistics — just enough distance falloff that SS
+        /// ranks a shotgun above a sniper up close and the reverse at range, mirroring the
+        /// role vanilla hit-chance plays in SS's formula.
+        ///
+        /// Sway is deliberately NOT summed into the spread as if it were degrees: CE's own
+        /// SwayAmplitude is (4.5 - shooting accuracy) x SwayFactor, so the raw factor is a
+        /// multiplier, not an angle. Adding it directly let sway account for ~90% of the term
+        /// on a typical gun and made both the weapon's real spread and the shooter's skill
+        /// nearly irrelevant to the ranking.
         /// </summary>
         internal static float CEHitFactor(ThingWithComps weapon, float distance)
         {
-            float spread = weapon.GetStatValue(CE_StatDefOf.ShotSpread);
-            float sway = weapon.GetStatValue(CE_StatDefOf.SwayFactor);
-            float lateralMissCells = distance * (spread + sway) * 0.01745f;
+            float spreadDegrees = weapon.GetStatValue(CE_StatDefOf.ShotSpread);
+            float swayFactor = weapon.GetStatValue(CE_StatDefOf.SwayFactor);
+            Pawn carrier = CompatUtil.CarrierOf(weapon);
+            float shootingAccuracy = carrier != null
+                ? Mathf.Min(carrier.GetStatValue(StatDefOf.ShootingAccuracyPawn), MaxShootingAccuracy)
+                : MaxShootingAccuracy; // unknown shooter: score the weapon on its own spread
+            float angularErrorDegrees = spreadDegrees + Mathf.Max(0f, MaxShootingAccuracy - shootingAccuracy) * swayFactor;
+            float lateralMissCells = distance * angularErrorDegrees * 0.01745f;
             return Mathf.Clamp01(0.4f / Mathf.Max(0.04f, lateralMissCells));
         }
 
@@ -100,8 +121,7 @@ namespace CESimpleSidearmsCompat.Patches
             {
                 return 0f;
             }
-            // Flat damage-per-cycle; the distance-aware RangedDPS variant multiplies in
-            // CEHitFactor, the distance-free RangedDPSAverage uses this as-is.
+            // Flat damage-per-cycle; both variants multiply in CEHitFactor.
             return damage * burst / speed;
         }
     }
@@ -122,7 +142,14 @@ namespace CESimpleSidearmsCompat.Patches
                 __result = 0f;
                 return false;
             }
-            __result = StatCalculator_RangedDPS_Patch.CEDps(weapon, ammoUser, atkProps, speedBias, averageSpeed);
+            // SS's own no-target formula ends by weighting damage with the weapon's accuracy
+            // stats, which for a CE gun resolve to the vanilla AccuracyBase fallback — i.e.
+            // purely the quality factor. Dropping that term made an awful gun score identical
+            // to a masterwork one, leaving carry order to decide. CE keeps quality (and
+            // attachments, and damaged parts) in ShotSpread, so scoring the hit proxy at a
+            // fixed reference range restores the signal without leaving CE's own model.
+            __result = StatCalculator_RangedDPS_Patch.CEDps(weapon, ammoUser, atkProps, speedBias, averageSpeed)
+                       * StatCalculator_RangedDPS_Patch.CEHitFactor(weapon, StatCalculator_RangedDPS_Patch.NoTargetReferenceDistance);
             return false;
         }
     }

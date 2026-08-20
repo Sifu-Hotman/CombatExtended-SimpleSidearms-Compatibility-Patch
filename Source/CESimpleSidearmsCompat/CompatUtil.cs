@@ -40,7 +40,9 @@ namespace CESimpleSidearmsCompat
                 // No carrier context; fall back to CE's own holder-based check.
                 return ammoUser.HasAmmoOrMagazine;
             }
-            var ammoTypes = ammoUser.Props?.ammoSet?.ammoTypes;
+            // CurAmmoSet, not Props.ammoSet: CompVariableAmmoUser overrides it with the
+            // player-selected set, which is the one the pawn's rounds belong to.
+            var ammoTypes = ammoUser.CurAmmoSet?.ammoTypes;
             if (ammoTypes == null)
             {
                 return ammoUser.HasAmmoOrMagazine;
@@ -54,9 +56,30 @@ namespace CESimpleSidearmsCompat
             CompAmmoUser ammoUser = weapon?.TryGetComp<CompAmmoUser>();
             if (ammoUser != null)
             {
+                // An empty magazine leaves CurrentAmmo pointing at the spent round — nothing
+                // clears it — while SelectedAmmo is what the next reload chambers. Classifying
+                // a dry EMP-selected gun by its last AP round is how it slips past skipEMP.
+                if (ammoUser.HasMagazine && ammoUser.CurMagCount <= 0 && ammoUser.SelectedAmmoProjectile != null)
+                {
+                    return ammoUser.SelectedAmmoProjectile;
+                }
                 return ammoUser.CurAmmoProjectile;
             }
             return weapon?.def.Verbs?.FirstOrDefault()?.defaultProjectile;
+        }
+
+        /// <summary>The pawn carrying this weapon (equipped or in inventory), if any.</summary>
+        public static Pawn CarrierOf(Thing weapon)
+        {
+            switch (weapon?.ParentHolder)
+            {
+                case Pawn_EquipmentTracker equipment:
+                    return equipment.pawn;
+                case Pawn_InventoryTracker inventory:
+                    return inventory.pawn;
+                default:
+                    return null;
+            }
         }
 
         /// <summary>Does Simple Sidearms remember this weapon (def + stuff) for this pawn?</summary>

@@ -31,8 +31,10 @@ namespace CESimpleSidearmsCompat.Patches
             {
                 return;
             }
-            // Cached bulk properties; CE keeps them fresh on inventory changes. Avoids the
-            // expensive GetAvailableBulk(true) full recount in generation-time filter loops.
+            // currentBulk is CE's cached figure, kept fresh on every inventory change;
+            // capacityBulk is a live CarryBulk stat read. Still far cheaper than the
+            // GetAvailableBulk(true) full recount, which matters because SS calls this
+            // inside a filter over every valid sidearm pair at pawn generation.
             if (bulk > inventory.capacityBulk - inventory.currentBulk)
             {
                 errString = "SidearmPickupFail_NoFreeSpace".Translate();
