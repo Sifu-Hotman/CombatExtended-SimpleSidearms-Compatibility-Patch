@@ -31,12 +31,12 @@ Inspired by the [discontinued mod by Ghosty](https://steamcommunity.com/sharedfi
  
 ## The suite
 
-This is the core, repair-only patch — it adds no behavior, only makes both mods work as originally intended.
+This is the core, repair-only patch - it adds no behavior, only makes both mods work as originally intended.
 
 These individual feature modules were made to improve the experience between the 2 mods: sidearm-aware CE AI tweaks, and sidearm-aware CE loadout handling.
 
-- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) — loadout-weapons-as-sidearms and ammo sustainment bridging CE loadouts with SS memory
-- [Compatibility Module - Tactics](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics) — smarter weapon-choice triggers
+- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) - loadout-weapons-as-sidearms and ammo sustainment bridging CE loadouts with SS memory
+- [Compatibility Module - Tactics](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics) - smarter weapon-choice triggers
 
 ## FAQ
 
@@ -44,7 +44,7 @@ These individual feature modules were made to improve the experience between the
 I'm not answering that.
 
 **Can I add or remove it mid-save?**
-Both are safe. It writes nothing of its own to a save — no settings, no records, no scribed data. Remove it and you are left with plain CE and plain Simple Sidearms.
+Both are safe. It writes nothing of its own to a save - no settings, no records, no scribed data. Remove it and you are left with plain CE and plain Simple Sidearms.
 
 **Does it change balance?**
 It makes the game easier in the sense that 2 core combat mods are no longer broken in your save.
@@ -67,16 +67,16 @@ I ask that if you have unconstructive feedback regarding the usage of AI while d
 | # | Problem under CE | Fix |
 |---|------------------|-----|
 | 1 | SS pickup checks ignore CE **bulk** (weight is already CE-aware via CE's `MassUtility.Capacity` patch) | Bulk check appended to `StatCalculator.CanPickupSidearmType` (also gates NPC sidearm generation) |
-| 2 | SS ranks ranged weapons with vanilla stats — meaningless for CE guns | CE-model DPS (ammo projectile damage, burst, reload amortization) with SS's speed-bias semantics preserved |
+| 2 | SS ranks ranged weapons with vanilla stats - meaningless for CE guns | CE-model DPS (ammo projectile damage, burst, reload amortization) with SS's speed-bias semantics preserved |
 | 3 | SS can auto-switch a pawn to a gun with **no ammo** | SS's own selection is re-run with dry guns hidden, so its whole filter chain (including its rules for other mods' shields and dual-wielding) picks the fallback |
 | 4 | SS-generated NPC sidearms spawn with empty mags, no spare ammo | Post-generation: magazines filled, spare mags added within CE inventory capacity (count from CE's `LoadoutPropertiesExtension` when present) |
-| 5 | SS auto-swaps interrupt CE reload jobs | Idle preference swaps suppressed during `ReloadWeapon`; explicit swaps end the reload cleanly first. Melee draws and used-up replacements still fire — a pawn attacked mid-reload must still draw |
-| 6 | SS CQC ("draw melee when melee-attacked") dead — `Verb_MeleeAttackCE` overrides the hooked method | SS's CQC postfix mirrored onto `Verb_MeleeAttackCE.TryCastShot` |
-| 7 | SS mid-combat ranged auto-switch dead — requires `Verb_Shoot`, CE uses `Verb_ShootCE` | SS's `Stance_Warmup` logic replicated for CE shoot verbs (reuses SS settings/helpers), with the warmup window read from the stance so CE's shortened repeat-shot aim still counts |
+| 5 | SS auto-swaps interrupt CE reload jobs | Idle preference swaps suppressed during `ReloadWeapon`; explicit swaps end the reload cleanly first. Melee draws and used-up replacements still fire - a pawn attacked mid-reload must still draw |
+| 6 | SS CQC ("draw melee when melee-attacked") dead - `Verb_MeleeAttackCE` overrides the hooked method | SS's CQC postfix mirrored onto `Verb_MeleeAttackCE.TryCastShot` |
+| 7 | SS mid-combat ranged auto-switch dead - requires `Verb_Shoot`, CE uses `Verb_ShootCE` | SS's `Stance_Warmup` logic replicated for CE shoot verbs (reuses SS settings/helpers), with the warmup window read from the stance so CE's shortened repeat-shot aim still counts |
 | 8 | One-use weapons (single-shot launchers): SS re-equip hook never fires (`Verb_ShootCEOneUse` is a separate class) | Post-`SelfConsume` fallback equips by SS preference when the pawn ends up empty-handed |
 | 9 | CE's `SwitchToNextViableWeapon` (weapon destroyed, one-use consumed, grenade thrown, empty gun mid-cast) ignores SS preferences | For SS-managed pawns, SS picks the weapon and CE keeps the cost: where CE asked for an `EquipFromInventory` job rather than an instant swap, SS's choice is handed back to CE as a candidate filter and CE queues its own job. CE logic (incl. fists) is the fallback. A pawn SS deliberately keeps unarmed stays unarmed. **Not covered:** an equipped gun running dry resolves inside `CompAmmoUser.DoOutOfAmmoAction`, which equips from inventory itself and never reaches this method |
 | 10 | CE loadout enforcement drops SS-remembered sidearms (drop/retrieve churn) | `GetExcessThing`/`GetExcessEquipment` answer "is this remembered?" from SS memory directly. Read-only: CE's hold-tracker is shared with the player's own hold command, so nothing is written into it |
-| 11 | SS EMP/dangerous-weapon detection reads the verb's default projectile, not the loaded CE ammo | Classification re-evaluated from the current CE projectile — or, on an empty magazine, the ammo the next reload will chamber |
+| 11 | SS EMP/dangerous-weapon detection reads the verb's default projectile, not the loaded CE ammo | Classification re-evaluated from the current CE projectile - or, on an empty magazine, the ammo the next reload will chamber |
 
 ## Building
 
@@ -96,7 +96,7 @@ internal members of both mods. Output lands in `Assemblies/`.
 
 **No CI**: the compile references live in local Steam Workshop folders and can't
 be vendored (CE is CC BY-NC-SA, Simple Sidearms has no license), so releases are
-manual local builds with the built DLL committed in `Assemblies/` — cloning the
+manual local builds with the built DLL committed in `Assemblies/` - cloning the
 repo yields a working mod without a toolchain. Full process: [RELEASING.md](RELEASING.md).
 
 ## Installing locally
@@ -124,7 +124,7 @@ ln -s "$(pwd)" ~/.local/share/Steam/steamapps/common/RimWorld/Mods/CESimpleSidea
 
 ## License
 
-[MIT-licensed](LICENSE) — code, build files, and docs.
+[MIT-licensed](LICENSE) - code, build files, and docs.
 
 The badge artwork is not: `About/Preview.png` and the `Media/Badge_*.png` set remix
 the rifle glyph from Combat Extended's own compatibility badge, so they stay under
