@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using CombatExtended;
 using HarmonyLib;
 using PeteTimesSix.SimpleSidearms;
@@ -14,9 +17,27 @@ namespace CESimpleSidearmsCompat.Patches
     /// SwitchToNextViableWeapon, which axis 9 routes through SS preferences); this fallback
     /// covers the remaining case where the pawn ends up empty-handed.
     /// </summary>
-    [HarmonyPatch(typeof(Verb_ShootCEOneUse), "SelfConsume")]
+    [HarmonyPatch]
     public static class Verb_ShootCEOneUse_SelfConsume_Patch
     {
+        /// <summary>
+        /// SelfConsume is private, so a subclass declaring its own shadows the base rather
+        /// than overriding it — and Verb_ThrowGrenade does exactly that, which meant every
+        /// thrown weapon slipped past a patch on the base declaration alone.
+        /// </summary>
+        [HarmonyTargetMethods]
+        public static IEnumerable<MethodBase> TargetMethods()
+        {
+            foreach (Type type in new[] { typeof(Verb_ShootCEOneUse), typeof(Verb_ThrowGrenade), typeof(Verb_ShootCEOneUseStatic) })
+            {
+                MethodBase method = AccessTools.DeclaredMethod(type, "SelfConsume");
+                if (method != null)
+                {
+                    yield return method;
+                }
+            }
+        }
+
         [HarmonyPostfix]
         public static void Postfix(Verb_ShootCEOneUse __instance)
         {
