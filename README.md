@@ -4,32 +4,23 @@
 ![CE + Simple Sidearms Compatibility Suite](Media/Badge_Suite.png)
 ![CE + Simple Sidearms Compatibility Patch](Media/Badge_Patch.png)
 
-RimWorld 1.6 compatibility mod making [Combat Extended](https://github.com/CombatExtended-Continued/CombatExtended)
-and [Simple Sidearms](https://github.com/PeteTimesSix/SimpleSidearms) work together.
+RimWorld compatibility mod making [Combat Extended](https://github.com/CombatExtended-Continued/CombatExtended) and [Simple Sidearms](https://github.com/PeteTimesSix/SimpleSidearms) work together.
 
-Both mods ship zero knowledge of each other: CE replaces the inventory model
-(weight + bulk), ammo, verbs, and adds its own loadout/weapon-switch AI; Simple
-Sidearms scores and swaps weapons using vanilla stats and vanilla verb hooks.
-This mod bridges the eleven incompatibility axes found by cross-reading both
-codebases (and the behavior of Ghosty's deprecated `SidearmsCECompatibility`,
-used as a reference only — no code reused).
+This mod patches core compatibility issues but doesn't bridge AI behaviors or UI elements (see [The suite](README.md:12)).
+
+Inspired by the [discontinued mod by Ghosty](https://steamcommunity.com/sharedfiles/filedetails/?id=3694067502), I de-compiled that mod and searched *even harder* for incompatibilities between the mods.
 
 ## The suite
 
-This is the core, repair-only patch of a small family — it adds no behavior, only makes
-both mods work as their authors intended. Feature modules build on it:
+This is the core, repair-only patch - it adds no behavior, only makes
+both mods work as origianlly intended. 
 
-[![Compatibility Module - Loadouts](Media/Badge_Loadouts.png)](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts)
+These individual feature modules were made to improve the experience between the 2 mods: sidearm -aware CE AI tweaks, and sidearm -friendly changes to the CE Loadout UI.
 
-CE loadouts and Simple Sidearms memory as one mental model: loadout weapons are
-auto-remembered as sidearms, and ammo sustainment rides CE's own "Ad hoc" switch.
+- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) — loadout-weapons-as-sidearms and ammo sustainment bridging CE loadouts with SS memory
+- Compatibility Module - Tactics (planned) — smarter weapon-choice triggers
 
-[![Compatibility Module - Tactics](Media/Badge_Tactics.png)](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics)
-
-Combat-time weapon choice: reload-abort when threatened, target-aware ammo and
-armor-aware melee scoring, ammo-depth tiebreak.
-
-## What it fixes
+## Fixes
 
 - Sidearm carry limits now respect CE's inventory system (weight *and* bulk). *(#1)*
 - Weapon ranking uses real CE damage numbers, so pawns actually pick the better gun. *(#2)*
@@ -44,7 +35,46 @@ armor-aware melee scoring, ammo-depth tiebreak.
 - CE loadout enforcement no longer strips remembered sidearms out of inventories. *(#10)*
 - EMP and incendiary weapon detection matches the ammo actually loaded. *(#11)*
 
-## What it fixes (for nerds)
+## Load order
+
+> Harmony → Combat Extended → Simple Sidearms → this mod.
+
+## FAQ
+
+**Is this "CE compatible"?**
+It *is* the CE compatibility patch. Combat Extended and Simple Sidearms both
+work fine on their own; this mod is what makes them work *together*. Nothing
+else needs patching.
+
+**Do I need both mods?**
+Yes: Harmony, Combat Extended, and Simple Sidearms. This mod does nothing on its
+own.
+
+**Can I add or remove it mid-save?**
+Both are safe. The only thing it writes to a save is CE hold-records, which CE
+itself purges and tolerates.
+
+**Does it change balance?**
+No. Every fix restores behavior one of the two mods already has — nothing is
+rebalanced, no new mechanics. The optional
+[Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts)
+and [Tactics](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics)
+modules are where new behavior lives, and they are separate downloads.
+
+**Why is my pawn keeping a sidearm that isn't in its CE loadout?**
+By design. A weapon you remembered through the Simple Sidearms gizmo is explicit
+intent, so CE's loadout enforcement won't strip it. Forget the sidearm in the
+gizmo and CE will clear it out on the next pass.
+
+**Does it work with Melee Animation?**
+Yes, with one known gap: animated execution kills bypass the melee-attack hook,
+so the CQC melee auto-draw doesn't trigger during those. Everything else works.
+
+**Which versions?**
+RimWorld 1.6, against the current Workshop builds of CE and Simple Sidearms.
+Release notes record the exact versions each release was tested against.
+
+## Fixes (for nerds)
 
 | # | Problem under CE | Fix |
 |---|------------------|-----|
@@ -59,10 +89,6 @@ armor-aware melee scoring, ammo-depth tiebreak.
 | 9 | CE's `SwitchToNextViableWeapon` (out-of-ammo, weapon destroyed, …) ignores SS preferences | For SS-managed pawns, SS preference switching runs first; CE logic (incl. fists) is the fallback |
 | 10 | CE loadout enforcement drops SS-remembered sidearms (drop/retrieve churn) | SS sidearm memory synced into CE HoldRecords (CE's own drop exemption); self-healing guards on `GetExcessThing`/`GetExcessEquipment` for pre-existing saves |
 | 11 | SS EMP/dangerous-weapon detection reads the verb's default projectile, not the loaded CE ammo | Classification re-evaluated from the current CE projectile |
-
-Load order: Harmony → Combat Extended → Simple Sidearms → this mod (declared in About.xml).
-Installs via CE's `IPatch` compatibility scanner, with a `StaticConstructorOnStartup`
-fallback; dev log line: `[CE+SimpleSidearms] Compatibility patches installed.`
 
 ## Building
 
@@ -98,17 +124,14 @@ ln -s "$(pwd)" ~/.local/share/Steam/steamapps/common/RimWorld/Mods/CESimpleSidea
 - DPS scoring omits hit-chance: CE's accuracy model (spread/sway/sight) has no
   vanilla-stat equivalent, so ranking compares damage-per-cycle. Speed-bias
   behavior from SS settings is preserved.
-- Axis-9 arbitration defers to CE for AOE/predicated switch requests (grenade AI,
-  urgent pickup) — those are CE-tactical decisions, not preference calls.
 - SS-remembered weapons are exempt from CE loadout drops by design: SS memory is
   explicit user intent. Remove the sidearm from SS memory to let CE drop it.
-- This mod's own code is [MIT-licensed](LICENSE) — compatible with contributing
-  portions into CE (CC BY-NC-SA) since we hold the copyright.
-- CE is licensed CC BY-NC-SA 4.0; Simple Sidearms has no published license. This
-  mod links against both at build time (never redistributes either) and
-  reimplements small SS behaviors (axes 6/7) against CE types; Ghosty's
-  deprecated patch was a behavioral reference only, no code reused. Credit to
-  PeteTimesSix and the CE team.
-- The "Combat Extended Compatible" badge is the CE team's own asset
-  (`Media/` in their repo), used as they recommend for compatible mods.
-  `Badge_Suite.png` is this suite's mark, shared by all family repos.
+
+## Credit
+
+- Thanks of course to PeteTimesSix and the CE team.
+- Thanks to Ghosty for the initial research put in to find incompatibilities between the 2 mods. 
+
+## License
+
+[MIT-licensed](LICENSE)
