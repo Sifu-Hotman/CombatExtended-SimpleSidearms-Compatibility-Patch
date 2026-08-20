@@ -4,6 +4,7 @@ using HarmonyLib;
 using PeteTimesSix.SimpleSidearms;
 using PeteTimesSix.SimpleSidearms.Utilities;
 using static PeteTimesSix.SimpleSidearms.Utilities.Enums;
+using SimpleSidearms.rimworld;
 using Verse;
 
 namespace CESimpleSidearmsCompat.Patches
@@ -54,6 +55,15 @@ namespace CESimpleSidearmsCompat.Patches
             {
                 __result = true;
                 return false; // SS handled the switch
+            }
+            // Staying unarmed can be SS's answer, not its failure: forced-unarmed,
+            // forced-unarmed-while-drafted and preferred-unarmed all leave Primary null on
+            // success. Ask SS whether that is the wanted state rather than inferring from
+            // the equipment pointer — otherwise CE re-arms a pawn the player set to fists.
+            if (after == null && (CompSidearmMemory.GetMemoryCompForPawn(pawn, false)?.IsCurrentWeaponForced(true) ?? false))
+            {
+                __result = false;
+                return false;
             }
             return true; // let CE try (other weapons by its heuristic, or fists)
         }
