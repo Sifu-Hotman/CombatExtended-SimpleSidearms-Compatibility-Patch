@@ -6,19 +6,19 @@
 
 RimWorld compatibility mod making [Combat Extended](https://github.com/CombatExtended-Continued/CombatExtended) and [Simple Sidearms](https://github.com/PeteTimesSix/SimpleSidearms) work together.
 
-This mod patches core compatibility issues but doesn't bridge AI behaviors or UI elements (see [The suite](README.md:12)).
+This mod patches core compatibility issues but doesn't bridge AI behaviors or UI elements (see [The suite](#the-suite)).
 
-Inspired by the [discontinued mod by Ghosty](https://steamcommunity.com/sharedfiles/filedetails/?id=3694067502), I de-compiled that mod and searched *even harder* for incompatibilities between the mods.
+Inspired by the [discontinued mod by Ghosty](https://steamcommunity.com/sharedfiles/filedetails/?id=3694067502), I decompiled that mod and searched *even harder* for incompatibilities between the mods.
 
 ## The suite
 
-This is the core, repair-only patch - it adds no behavior, only makes
-both mods work as origianlly intended. 
+This is the core, repair-only patch — it adds no behavior, only makes
+both mods work as originally intended.
 
-These individual feature modules were made to improve the experience between the 2 mods: sidearm -aware CE AI tweaks, and sidearm -friendly changes to the CE Loadout UI.
+These individual feature modules were made to improve the experience between the 2 mods: sidearm-aware CE AI tweaks, and sidearm-aware CE loadout handling.
 
 - [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) — loadout-weapons-as-sidearms and ammo sustainment bridging CE loadouts with SS memory
-- Compatibility Module - Tactics (planned) — smarter weapon-choice triggers
+- [Compatibility Module - Tactics](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics) — smarter weapon-choice triggers
 
 ## Fixes
 
@@ -42,31 +42,30 @@ These individual feature modules were made to improve the experience between the
 ## FAQ
 
 **CE compatible?**
-I'm not answering that. 
+I'm not answering that.
 
 **Can I add or remove it mid-save?**
 Both are safe. The only thing it writes to a save is CE hold-records, which CE
 itself purges and tolerates.
 
 **Does it change balance?**
-It makes the game easier in the sense that 2 core combat mods are no longer broken in your save. 
+It makes the game easier in the sense that 2 core combat mods are no longer broken in your save.
 
-But in the traditional sense, no. 
+But in the traditional sense, no.
 
 **Why is my pawn keeping a sidearm that isn't in its CE loadout?**
-By design. *Every* weapon in the pawn's sidearm list is exempt from CE's loadout
-enforcement — not just the ones you set as default or forced — because putting a
-weapon in that list is itself the instruction to keep it. This includes weapons
-picked up as sidearms mid-battle. Forget the sidearm in the gizmo and CE clears
-it out on the next pass.
+Pawns won't automatically drop any weapon Simple Sidearms remembers — which includes
+weapons they've equipped, since SS remembers those on its own. Forget it in the SS gizmo
+to let CE drop it.
 
 **Does it work with Melee Animation?**
 Yes, with one known gap: animated execution kills bypass the melee-attack hook,
 so the CQC melee auto-draw doesn't trigger during those. Everything else works.
 
-**Which versions?**
-RimWorld 1.6, against the current Workshop builds of CE and Simple Sidearms.
-Release notes record the exact versions each release was tested against.
+**AI?**
+This mod was engineered with the help of an AI Coding Assistant (Claude Code, Fable 5, Max effort). The amount of researching and deep-diving the compatibility interfaces of both mods would have been insurmountable without it.
+
+I ask that if you have unconstructive feedback regarding the usage of AI while developing this mod, that it remains outside of this community space. Thank you.
 
 ## Fixes (for nerds)
 
@@ -118,15 +117,14 @@ ln -s "$(pwd)" ~/.local/share/Steam/steamapps/common/RimWorld/Mods/CESimpleSidea
 - DPS scoring omits hit-chance: CE's accuracy model (spread/sway/sight) has no
   vanilla-stat equivalent, so ranking compares damage-per-cycle. Speed-bias
   behavior from SS settings is preserved.
-- SS-remembered weapons are exempt from CE loadout drops by design: SS memory is
-  explicit user intent. This covers every entry in the sidearm list, whatever
-  role it has (or hasn't) — battlefield pickups included. Remove the sidearm from
-  SS memory to let CE drop it.
+- SS-remembered weapons are exempt from CE loadout drops by design. This covers every
+  entry in the sidearm list, including weapons SS remembered automatically when a pawn
+  equipped them. Remove the sidearm from SS memory to let CE drop it.
 
 ## Credit
 
 - Thanks of course to PeteTimesSix and the CE team.
-- Thanks to Ghosty for the initial research put in to find incompatibilities between the 2 mods. 
+- Thanks to Ghosty for the initial research put in to find incompatibilities between the 2 mods.
 
 ## License
 
