@@ -374,10 +374,13 @@ namespace CESSCompatTestStaging
                             bool pistolTargeted = excess && dropThing?.def == pistol;
                             return (!pistolTargeted, $"excess={excess} dropThing={dropThing?.def?.defName ?? "none"}");
                         }),
-                        C("pistol-hold-record-present", () =>
+                        C("no-hold-records-written", () =>
                         {
+                            // The exemption is answered in the GetExcess* postfixes and nothing
+                            // is written back: CE's hold-tracker is shared with the player's own
+                            // "hold this" command, and editing it clobbered their records.
                             int n = PistolHoldRecords();
-                            return (n >= 1, $"pistol hold records={n}");
+                            return (n == 0, $"pistol hold records={n} (want 0 — exemption is read-only)");
                         }),
                     }
                 },
@@ -392,7 +395,7 @@ namespace CESSCompatTestStaging
                     },
                     checks =
                     {
-                        C("hold-record-removed", () =>
+                        C("still-no-hold-records", () =>
                         {
                             int n = PistolHoldRecords();
                             return (n == 0, $"pistol hold records={n}");
@@ -420,10 +423,16 @@ namespace CESSCompatTestStaging
                     },
                     checks =
                     {
-                        C("hold-records-not-duplicated", () =>
+                        C("exemption-survives-repeat-remembers", () =>
                         {
+                            // SS's memory list grows on repeated remembers (see below); the
+                            // exemption must stay a clean yes/no regardless, and must still not
+                            // write anything into CE's tracker.
+                            bool excess = Utility_HoldTracker.GetExcessThing(bulky, out Thing dropThing, out int _);
+                            bool pistolTargeted = excess && dropThing?.def == pistol;
                             int n = PistolHoldRecords();
-                            return (n == 1, $"pistol hold records after 3x remember={n} (want exactly 1)");
+                            return (!pistolTargeted && n == 0,
+                                $"pistolTargeted={pistolTargeted} hold records={n} (want false/0)");
                         }),
                         C("ss-memory-dup-upstream-quirk", () =>
                         {
@@ -779,12 +788,20 @@ namespace CESSCompatTestStaging
                         {
                             boomy.TryGetComp<CompInventory>().TrySwitchToWeapon(launcher);
                         }
-                        IntVec3 targetCell = boomy.Position + new IntVec3(10, 0, 0);
+                        // As far as this launcher can actually shoot, so the blast cannot reach
+                        // the shooter, but inside its range so a drafted AttackStatic fires
+                        // instead of standing there unable to reach the cell. At a fixed 10
+                        // cells Boomy was downed or killed by his own rocket; at a fixed 24 he
+                        // was out of range and never fired. Both decided the phase on something
+                        // other than the one-use fallback.
+                        float launcherRange = launcher.GetComp<CompEquippable>()?.PrimaryVerb?.verbProps?.range ?? 12f;
+                        int shotDistance = Math.Max(6, Math.Min(18, (int)launcherRange - 2));
+                        IntVec3 targetCell = boomy.Position + new IntVec3(shotDistance, 0, 0);
                         targetCell = targetCell.ClampInsideMap(boomy.Map);
-                        if (!targetCell.Standable(boomy.Map))
+                        if (!targetCell.Standable(boomy.Map) || targetCell.DistanceTo(boomy.Position) < shotDistance - 2f)
                         {
-                            CellFinder.TryFindRandomCellNear(boomy.Position, boomy.Map, 12,
-                                c => c.Standable(boomy.Map) && c.DistanceTo(boomy.Position) > 6, out targetCell);
+                            CellFinder.TryFindRandomCellNear(boomy.Position, boomy.Map, shotDistance + 4,
+                                c => c.Standable(boomy.Map) && c.DistanceTo(boomy.Position) > shotDistance - 2f, out targetCell);
                         }
                         Job job = JobMaker.MakeJob(JobDefOf.AttackStatic, new LocalTargetInfo(targetCell));
                         boomy.jobs.TryTakeOrderedJob(job);
