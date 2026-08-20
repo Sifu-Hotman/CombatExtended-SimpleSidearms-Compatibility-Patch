@@ -1,12 +1,12 @@
 # CombatExtended-SimpleSidearms Compatibility Patch
 
 [![Combat Extended Compatible](Media/Badge_CE_compatible.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2890901044)
-![CE + Simple Sidearms Compatibility Suite](Media/Badge_Suite.png)
+[![CE + Simple Sidearms Compatibility Suite](Media/Badge_Suite.png)](#my-other-mods)
 ![CE + Simple Sidearms Compatibility Patch](Media/Badge_Patch.png)
 
 RimWorld compatibility mod making [Combat Extended](https://github.com/CombatExtended-Continued/CombatExtended) and [Simple Sidearms](https://github.com/PeteTimesSix/SimpleSidearms) work together.
 
-This mod patches core compatibility issues but doesn't bridge AI behaviors or UI elements (see [The suite](#the-suite)).
+This mod patches core compatibility issues but doesn't bridge AI behaviors or UI elements (see [My other mods](#my-other-mods)).
 
 Inspired by the [discontinued mod by Ghosty](https://steamcommunity.com/sharedfiles/filedetails/?id=3694067502), I decompiled that mod and searched *even harder* for incompatibilities between the mods.
 
@@ -29,14 +29,49 @@ Inspired by the [discontinued mod by Ghosty](https://steamcommunity.com/sharedfi
 
 > Harmony → Combat Extended → Simple Sidearms → this mod.
  
-## The suite
+## My other mods
 
-This is the core, repair-only patch - it adds no behavior, only makes both mods work as originally intended.
+### The CE + Simple Sidearms suite
 
-These individual feature modules were made to improve the experience between the 2 mods: sidearm-aware CE AI tweaks, and sidearm-aware CE loadout handling.
+Two optional modules sit on top of this patch and require it. This patch only repairs
+what the two mods break in each other; anything that would *change* how they behave
+lives out here, so you can take the repairs without taking my opinions.
 
-- [Compatibility Module - Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) - loadout-weapons-as-sidearms and ammo sustainment bridging CE loadouts with SS memory
-- [Compatibility Module - Tactics](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics) - smarter weapon-choice triggers
+[![Compatibility Module - Loadouts](Media/Badge_Loadouts.png)](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts)
+
+CE loadouts and Simple Sidearms memory as one idea: weapons listed in a loadout are
+remembered as sidearms, roles follow list order, and their ammo is kept stocked off CE's
+own ad-hoc flag.
+
+*For you if you manage kit through CE loadouts and are tired of teaching every new
+recruit their sidearms by hand.*
+
+[![Compatibility Module - Tactics](Media/Badge_Tactics.png)](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics)
+
+Better triggers for *when* a pawn changes weapon: don't abandon a reload to switch,
+break DPS ties by how much ammo is actually carried, pick a melee weapon that can hurt
+what is standing in front of you.
+
+*For you if your pawns pick sensible weapons at senseless moments.*
+
+### Standalone
+
+Neither needs this patch, or each other.
+
+[![Better Attack Orders for Simple Sidearms](Media/Badge_BAO.png)](https://github.com/eebette/Better-Attack-Orders-for-Simple-Sidearms)
+
+Simple Sidearms only, no CE. Your pawn holds a revolver and carries a sniper rifle;
+right-clicking a distant enemy tells you they can't reach. This makes attack orders
+consider every gun the pawn is carrying.
+
+*For you if you have ever manually swapped a weapon just to issue an attack order.*
+
+[![Loadout Quality for Combat Extended](Media/Badge_LQ.png)](https://github.com/eebette/Loadout-Quality-for-Combat-Extended)
+
+Combat Extended only, no Simple Sidearms. Per-loadout quality and durability floors, and
+pawns upgrade themselves when a better copy of a weapon they already carry shows up.
+
+*For you if "normal or better, no tainted" is a rule you have been enforcing by hand.*
 
 ## FAQ
 
@@ -57,6 +92,14 @@ But in the traditional sense, no.
 **Why is my pawn keeping a sidearm that isn't in its CE loadout?**
 
 Pawns won't automatically drop any weapon Simple Sidearms remembers. Forget it in the SS gizmo to let CE drop it.
+
+If you'd rather the loadout be the authority — in the loadout means remembered, out of it means forgotten — that's what the [Loadouts module](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts) changes.
+
+**Why did my pawn switch weapons *then*?**
+
+This patch restores Simple Sidearms' own switching triggers, which CE had silently broken;
+it doesn't second-guess them. Changing when those triggers fire is the
+[Tactics module](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics).
 
 **Does it work with Melee Animation?**
 
