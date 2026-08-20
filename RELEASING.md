@@ -66,6 +66,28 @@ toolchain.
 7. **Workshop upload** — per the publishing checklist (issue #3) once the mod
    is on the Workshop; the badge BBCode for the listing is recorded there.
 
+## Demo scene
+
+The Workshop listing and the README carry a short GIF per mod. Record it from the
+staged test saves rather than a campaign — they are already posed, and they reload
+identically every time.
+
+1. `./test/run-test.sh stage` to regenerate the CETEST saves, then launch normally
+   (`./test/run-test.sh`) and load **CETEST-3-combat**: two colonists, one raider,
+   the melee draw and the mid-fight shotgun swap both in frame.
+2. Dev mode off, autosave off, UI scale 1.0, windowed 1600x900. Speed 1x — the
+   swap reads as an accident at 3x.
+3. Camera: zoom to roughly a 20-cell field with both colonists visible; the swap
+   fires within the first second of the firefight, so start recording paused and
+   unpause into it.
+4. 6-10 seconds is enough. Trim to the moment before contact, cut once the
+   replacement weapon is in hand.
+5. Export as GIF, drop it in `Media/`, and reference it from the README and from
+   the `DEMO GIF` slot in `docs/WORKSHOP_DESCRIPTION.bbcode`.
+
+The other saves cover the other axes if a second clip is wanted: CETEST-1-pickup
+(bulk refusal), CETEST-4-generation (raider sidearms, one-use fallback).
+
 ## Versioning & save compatibility
 
 Semver tags, `v1.0.0` at first Workshop release.
@@ -73,10 +95,11 @@ Semver tags, `v1.0.0` at first Workshop release.
 Two guarantees, both currently true and both **binding on every future change**:
 
 - **Safe to ADD mid-save.** All patches are lazy and save-agnostic; the axis-10
-  hold-record sync happens lazily from live SS memory, nothing needs to exist
-  in the save beforehand.
-- **Safe to REMOVE mid-save.** The only persistent footprint is CE HoldRecords,
-  which CE purges/tolerates natively; SS memory is SS's own data either way.
+  drop exemption is answered from live SS memory, nothing needs to exist in the
+  save beforehand.
+- **Safe to REMOVE mid-save.** There is no persistent footprint at all: the mod
+  scribes nothing and writes into no other mod's saved state. SS memory is SS's
+  own data either way.
 
 A change that would break either guarantee must bump the **major** version and
 document the migration in the release notes. Patch/minor releases must state

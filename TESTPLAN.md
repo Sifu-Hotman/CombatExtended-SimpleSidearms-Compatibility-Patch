@@ -17,7 +17,7 @@ Most of this plan runs unattended via `test/run-assert.sh <scenario> <save>`
 ./test/run-assert.sh cetest4 CETEST-4-generation
 ```
 
-Full green pass recorded 2026-08-17 (all four scenarios, zero exceptions in logs).
+Full green pass recorded 2026-08-20 (all four scenarios, zero exceptions in logs).
 Coverage highlights beyond the manual checklist: axis-5 direct unit hit (SS switch
 entry point invoked DURING a live CE reload job — reload survived), axis-8 full
 chain (rocket actually fired at a ground cell, consumption → SS-preference

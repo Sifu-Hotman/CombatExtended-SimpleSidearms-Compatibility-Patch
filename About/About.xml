@@ -17,7 +17,7 @@ Covers:
 - CQC melee auto-switch works with CE melee verbs
 - Mid-combat ranged auto-switch works with CE shoot verbs
 - One-use weapon (single-shot launcher) re-equip follows Simple Sidearms preferences
-- CE's out-of-ammo weapon switching respects Simple Sidearms preferences
+- CE's replacement-weapon switching (destroyed, used up, thrown) respects Simple Sidearms preferences
 - CE loadouts no longer drop remembered sidearms (synced to CE hold-tracking)
 - EMP/dangerous weapon detection reads the loaded CE ammo type</description>
     <modDependencies>

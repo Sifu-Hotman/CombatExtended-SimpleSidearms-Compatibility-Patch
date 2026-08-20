@@ -12,8 +12,7 @@ Inspired by the [discontinued mod by Ghosty](https://steamcommunity.com/sharedfi
 
 ## The suite
 
-This is the core, repair-only patch — it adds no behavior, only makes
-both mods work as originally intended.
+This is the core, repair-only patch — it adds no behavior, only makes both mods work as originally intended.
 
 These individual feature modules were made to improve the experience between the 2 mods: sidearm-aware CE AI tweaks, and sidearm-aware CE loadout handling.
 
@@ -30,7 +29,7 @@ These individual feature modules were made to improve the experience between the
 - Drawing a melee sidearm when attacked in melee works again. *(#6)*
 - Mid-fight auto-switching to a better-suited gun works again. *(#7)*
 - Firing a single-use launcher leaves the pawn holding their preferred backup, not fists. *(#8)*
-- When a gun runs dry or is destroyed, the replacement follows your sidearm
+- When a weapon is destroyed or used up, the replacement follows your sidearm
   preferences instead of CE's guess. *(#9)*
 - CE loadout enforcement no longer strips remembered sidearms out of inventories. *(#10)*
 - EMP and incendiary weapon detection matches the ammo actually loaded. *(#11)*
@@ -45,8 +44,7 @@ These individual feature modules were made to improve the experience between the
 I'm not answering that.
 
 **Can I add or remove it mid-save?**
-Both are safe. The only thing it writes to a save is CE hold-records, which CE
-itself purges and tolerates.
+Both are safe. It writes nothing of its own to a save — no settings, no records, no scribed data. Remove it and you are left with plain CE and plain Simple Sidearms.
 
 **Does it change balance?**
 It makes the game easier in the sense that 2 core combat mods are no longer broken in your save.
@@ -54,13 +52,10 @@ It makes the game easier in the sense that 2 core combat mods are no longer brok
 But in the traditional sense, no.
 
 **Why is my pawn keeping a sidearm that isn't in its CE loadout?**
-Pawns won't automatically drop any weapon Simple Sidearms remembers — which includes
-weapons they've equipped, since SS remembers those on its own. Forget it in the SS gizmo
-to let CE drop it.
+Pawns won't automatically drop any weapon Simple Sidearms remembers. Forget it in the SS gizmo to let CE drop it.
 
 **Does it work with Melee Animation?**
-Yes, with one known gap: animated execution kills bypass the melee-attack hook,
-so the CQC melee auto-draw doesn't trigger during those. Everything else works.
+Yes, with one known gap: animated execution kills bypass the melee-attack hook, so the CQC melee auto-draw doesn't trigger during those. Everything else works.
 
 **AI?**
 This mod was engineered with the help of an AI Coding Assistant (Claude Code, Fable 5, Max effort). The amount of researching and deep-diving the compatibility interfaces of both mods would have been insurmountable without it.
@@ -73,15 +68,15 @@ I ask that if you have unconstructive feedback regarding the usage of AI while d
 |---|------------------|-----|
 | 1 | SS pickup checks ignore CE **bulk** (weight is already CE-aware via CE's `MassUtility.Capacity` patch) | Bulk check appended to `StatCalculator.CanPickupSidearmType` (also gates NPC sidearm generation) |
 | 2 | SS ranks ranged weapons with vanilla stats — meaningless for CE guns | CE-model DPS (ammo projectile damage, burst, reload amortization) with SS's speed-bias semantics preserved |
-| 3 | SS can auto-switch a pawn to a gun with **no ammo** | Best-ranged-weapon selection re-run over loaded weapons only, preserving next-best fallback |
+| 3 | SS can auto-switch a pawn to a gun with **no ammo** | SS's own selection is re-run with dry guns hidden, so its whole filter chain (including its rules for other mods' shields and dual-wielding) picks the fallback |
 | 4 | SS-generated NPC sidearms spawn with empty mags, no spare ammo | Post-generation: magazines filled, spare mags added within CE inventory capacity (count from CE's `LoadoutPropertiesExtension` when present) |
-| 5 | SS auto-swaps interrupt CE reload jobs | Preference swaps suppressed during `ReloadWeapon`; explicit swaps end the reload cleanly first |
+| 5 | SS auto-swaps interrupt CE reload jobs | Idle preference swaps suppressed during `ReloadWeapon`; explicit swaps end the reload cleanly first. Melee draws and used-up replacements still fire — a pawn attacked mid-reload must still draw |
 | 6 | SS CQC ("draw melee when melee-attacked") dead — `Verb_MeleeAttackCE` overrides the hooked method | SS's CQC postfix mirrored onto `Verb_MeleeAttackCE.TryCastShot` |
-| 7 | SS mid-combat ranged auto-switch dead — requires `Verb_Shoot`, CE uses `Verb_ShootCE` | SS's `Stance_Warmup` logic replicated for CE shoot verbs (reuses SS settings/helpers) |
+| 7 | SS mid-combat ranged auto-switch dead — requires `Verb_Shoot`, CE uses `Verb_ShootCE` | SS's `Stance_Warmup` logic replicated for CE shoot verbs (reuses SS settings/helpers), with the warmup window read from the stance so CE's shortened repeat-shot aim still counts |
 | 8 | One-use weapons (single-shot launchers): SS re-equip hook never fires (`Verb_ShootCEOneUse` is a separate class) | Post-`SelfConsume` fallback equips by SS preference when the pawn ends up empty-handed |
-| 9 | CE's `SwitchToNextViableWeapon` (out-of-ammo, weapon destroyed, …) ignores SS preferences | For SS-managed pawns, SS preference switching runs first; CE logic (incl. fists) is the fallback |
-| 10 | CE loadout enforcement drops SS-remembered sidearms (drop/retrieve churn) | SS sidearm memory synced into CE HoldRecords (CE's own drop exemption); self-healing guards on `GetExcessThing`/`GetExcessEquipment` for pre-existing saves |
-| 11 | SS EMP/dangerous-weapon detection reads the verb's default projectile, not the loaded CE ammo | Classification re-evaluated from the current CE projectile |
+| 9 | CE's `SwitchToNextViableWeapon` (weapon destroyed, one-use consumed, grenade thrown, empty gun mid-cast) ignores SS preferences | For SS-managed pawns, SS preference switching runs first; CE logic (incl. fists) is the fallback. A pawn SS deliberately keeps unarmed stays unarmed. **Not covered:** an equipped gun running dry resolves inside `CompAmmoUser.DoOutOfAmmoAction`, which equips from inventory itself and never reaches this method |
+| 10 | CE loadout enforcement drops SS-remembered sidearms (drop/retrieve churn) | `GetExcessThing`/`GetExcessEquipment` answer "is this remembered?" from SS memory directly. Read-only: CE's hold-tracker is shared with the player's own hold command, so nothing is written into it |
+| 11 | SS EMP/dangerous-weapon detection reads the verb's default projectile, not the loaded CE ammo | Classification re-evaluated from the current CE projectile — or, on an empty magazine, the ammo the next reload will chamber |
 
 ## Building
 
@@ -114,9 +109,10 @@ ln -s "$(pwd)" ~/.local/share/Steam/steamapps/common/RimWorld/Mods/CESimpleSidea
 
 ## Notes / limitations
 
-- DPS scoring omits hit-chance: CE's accuracy model (spread/sway/sight) has no
-  vanilla-stat equivalent, so ranking compares damage-per-cycle. Speed-bias
-  behavior from SS settings is preserved.
+- DPS scoring is a ranking proxy, not CE's ballistics: damage-per-cycle scaled by a
+  hit factor built from the weapon's spread and the shooter's accuracy against CE's
+  sway model. Good enough to order weapons the way CE's own accuracy would; not a
+  prediction of any individual shot. Speed-bias behavior from SS settings is preserved.
 - SS-remembered weapons are exempt from CE loadout drops by design. This covers every
   entry in the sidearm list, including weapons SS remembered automatically when a pawn
   equipped them. Remove the sidearm from SS memory to let CE drop it.
@@ -128,4 +124,9 @@ ln -s "$(pwd)" ~/.local/share/Steam/steamapps/common/RimWorld/Mods/CESimpleSidea
 
 ## License
 
-[MIT-licensed](LICENSE)
+[MIT-licensed](LICENSE) — code, build files, and docs.
+
+The badge artwork is not: `About/Preview.png` and the `Media/Badge_*.png` set remix
+the rifle glyph from Combat Extended's own compatibility badge, so they stay under
+CE's CC BY-NC-SA 4.0 (attribution, non-commercial, share-alike). Details in
+[NOTICE](NOTICE).
