@@ -558,6 +558,14 @@ namespace CESSCompatTestStaging
 
         // -- CETEST-3: axes 6 (CQC), 7 (warmup swap), 5 (reload guard) ------
 
+        // Captured synchronously inside the axis-9 queued-equip phase; a poll-based check
+        // would race the job it is meant to observe.
+        private ThingDef queuedFrom;
+        private JobDef queuedJob;
+        private ThingDef queuedTarget;
+        private ThingDef queuedPrimaryImmediately;
+        private bool queuedResult;
+
         private List<Phase> BuildCetest3()
         {
             Pawn fency = Colonist("Fency");
@@ -659,6 +667,59 @@ namespace CESSCompatTestStaging
                             bool reloading = scopey.CurJobDef == CE_JobDefOf.ReloadWeapon;
                             return (reloading, $"job={scopey.CurJobDef?.defName}");
                         }, informational: true),
+                    }
+                },
+                new Phase
+                {
+                    // Axis 9, stopJob:false path (CE's CompReload calls it that way when a
+                    // pawn's gun is empty mid-cast). CE wants an interruptible
+                    // EquipFromInventory job, not an instant swap — but it should be equipping
+                    // SS's preferred weapon, not the first viable one in CE's own list order.
+                    label = "queued-equip-uses-ss-preference",
+                    deadlineTicks = 10000,
+                    mutate = () =>
+                    {
+                        scopey.jobs.StopAll();
+                        ThingWithComps sniperThing = scopey.inventory.innerContainer
+                            .OfType<ThingWithComps>().FirstOrDefault(t => t.def == sniper)
+                            ?? (scopey.equipment.Primary?.def == sniper ? scopey.equipment.Primary : null);
+                        if (sniperThing == null)
+                        {
+                            throw new InvalidOperationException("Scopey is not carrying the sniper");
+                        }
+                        // CE only offers weapons it considers firable, so make sure the one SS
+                        // is about to prefer actually has rounds.
+                        sniperThing.TryGetComp<CompAmmoUser>()?.ResetAmmoCount();
+                        CompSidearmMemory memory = CompSidearmMemory.GetMemoryCompForPawn(scopey);
+                        memory.DefaultRangedWeapon = new ThingDefStuffDefPair(sniper, null);
+
+                        queuedFrom = scopey.equipment.Primary?.def;
+                        bool handled = scopey.TryGetComp<CompInventory>()
+                            .SwitchToNextViableWeapon(useFists: true, useAOE: false, stopJob: false);
+                        // Captured synchronously: the job runs within a few ticks, well inside
+                        // the runner's 30-tick poll interval.
+                        queuedResult = handled;
+                        queuedJob = scopey.CurJobDef;
+                        queuedTarget = (scopey.CurJob?.targetA.Thing)?.def;
+                        queuedPrimaryImmediately = scopey.equipment.Primary?.def;
+                    },
+                    checks =
+                    {
+                        C("equip-was-queued-not-instant", () =>
+                        {
+                            bool queued = queuedJob == CE_JobDefOf.EquipFromInventory;
+                            bool unchanged = queuedPrimaryImmediately == queuedFrom;
+                            return (queued && unchanged,
+                                $"handled={queuedResult} job={queuedJob?.defName ?? "none"} "
+                                + $"primaryAtCall={queuedPrimaryImmediately?.defName ?? "none"} (was {queuedFrom?.defName ?? "none"})");
+                        }),
+                        C("queued-weapon-is-ss-preference", () =>
+                            (queuedTarget == sniper, $"jobTarget={queuedTarget?.defName ?? "none"}")),
+                        C("preference-actually-equipped", () =>
+                        {
+                            ThingDef primary = scopey.equipment?.Primary?.def;
+                            return (primary == sniper, $"primary={primary?.defName ?? "none"} job={scopey.CurJobDef?.defName ?? "none"}");
+                        }),
                     }
                 },
             };
