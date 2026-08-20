@@ -56,7 +56,7 @@ what is standing in front of you.
 
 ### Standalone
 
-Neither needs this patch, or each other.
+None of these need this patch, or each other.
 
 [![Better Attack Orders for Simple Sidearms](Media/Badge_BAO.png)](https://github.com/eebette/Better-Attack-Orders-for-Simple-Sidearms)
 
@@ -72,6 +72,18 @@ Combat Extended only, no Simple Sidearms. Per-loadout quality and durability flo
 pawns upgrade themselves when a better copy of a weapon they already carry shows up.
 
 *For you if "normal or better, no tainted" is a rule you have been enforcing by hand.*
+
+[![Universal Patch for More Materials](Media/Badge_UPMM.png)](https://github.com/eebette/Universal-Patch-for-More-Materials)
+
+No weapons involved at all. [More Materials](https://steamcommunity.com/sharedfiles/filedetails/?id=3055040889)
+adds copper, tin, nickel and five other metals — to vanilla recipes, and to no modded
+ones. This works out the rules behind those choices (*anything with a power comp and a
+steel cost needs copper*) and applies them categorically, so mods it has never seen are
+covered, including ones published after it. Measured on a 305-mod list: 221 buildings
+across 43 content mods, no vanilla def touched.
+
+*For you if you run More Materials and noticed modded buildings quietly sidestepping the
+new metals.*
 
 ## FAQ
 

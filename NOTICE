@@ -36,10 +36,11 @@ Not derived from Combat Extended
 --------------------------------
 
     Media/Badge_BAO.png
+    Media/Badge_UPMM.png
 
-Same geometry as the badges above, but its emblem is drawn from scratch (it belongs
-to a Simple Sidearms mod with no Combat Extended dependency). MIT, with the rest of
-this project's own work.
+Same geometry as the badges above, but their emblems are drawn from scratch — they
+belong to mods with no Combat Extended dependency (a Simple Sidearms mod and a
+materials patch). MIT, with the rest of this project's own work.
 
 Simple Sidearms
 ---------------
