@@ -42,7 +42,7 @@ toolchain.
 
 3. **Manual smoke** (what the runner can't see): load a real campaign save,
    play a fight, confirm no red dev-log errors and the checks in
-   `test/TESTPLAN.md` marked manual (gizmo rendering, caravan dialog, Gear tab,
+   `TESTPLAN.md` marked manual (gizmo rendering, caravan dialog, Gear tab,
    save/reload).
 
 4. **Commit the DLL.** `Assemblies/CESimpleSidearmsCompat.dll` ships in-repo

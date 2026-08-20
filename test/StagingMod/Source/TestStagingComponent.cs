@@ -10,7 +10,7 @@ using Verse.AI.Group;
 namespace CESSCompatTestStaging
 {
     /// <summary>
-    /// Builds the CETEST-* staged saves described in test/TESTPLAN.md.
+    /// Builds the CETEST-* staged saves described in TESTPLAN.md.
     /// Only runs when the game is launched with: -quicktest -cestage
     /// Each scenario is staged on the quicktest map, saved, then torn down.
     /// </summary>
@@ -65,7 +65,7 @@ namespace CESSCompatTestStaging
             Find.TickManager.Pause();
             Log.Message("[CE+SS TestStaging] All CETEST saves created.");
             Find.LetterStack.ReceiveLetter("CETEST saves created",
-                "Staged saves written: CETEST-1-pickup, CETEST-2-selection, CETEST-3-combat, CETEST-4-generation.\n\nQuit to main menu and Load one. See test/TESTPLAN.md for the per-save checklist.",
+                "Staged saves written: CETEST-1-pickup, CETEST-2-selection, CETEST-3-combat, CETEST-4-generation.\n\nQuit to main menu and Load one. See TESTPLAN.md for the per-save checklist.",
                 LetterDefOf.PositiveEvent);
         }
 
