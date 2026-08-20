@@ -101,6 +101,14 @@ Two guarantees, both currently true and both **binding on every future change**:
   scribes nothing and writes into no other mod's saved state. SS memory is SS's
   own data either way.
 
-A change that would break either guarantee must bump the **major** version and
+A third obligation covers the suite modules. `CompatUtil` is the only type in this
+assembly they are allowed to bind to, and they compile against the committed DLL —
+so a rename or a semantic change there breaks another mod at load time, not at
+build time, and nothing in this repo will fail to compile first. Changing a
+`CompatUtil` member means bumping the **major** version, updating the Loadouts and
+Tactics modules in the same release, and saying so in the notes. Anything else in
+this assembly is implementation and may be reshaped freely.
+
+A change that would break either save guarantee must bump the **major** version and
 document the migration in the release notes. Patch/minor releases must state
 which upstream CE/SS versions they were tested against.

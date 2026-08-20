@@ -6,6 +6,14 @@ using Verse;
 
 namespace CESimpleSidearmsCompat
 {
+    /// <summary>
+    /// The only type in this assembly the suite modules may bind to. Everything else here is
+    /// implementation and can be deleted or reshaped without notice — the Loadouts module
+    /// learned that the hard way by calling an internal helper that later stopped existing,
+    /// which compiles fine and fails at load. Treat the members below as an API: changing a
+    /// signature or its semantics means bumping the major version and updating the modules
+    /// that consume it (see RELEASING.md).
+    /// </summary>
     public static class CompatUtil
     {
         /// <summary>A weapon whose stats follow CE's model (patched verb and/or ammo comp).</summary>
@@ -53,7 +61,15 @@ namespace CESimpleSidearmsCompat
         /// <summary>Projectile the weapon would currently fire (loaded/selected CE ammo, else verb default).</summary>
         public static ThingDef CurrentProjectile(ThingWithComps weapon)
         {
-            CompAmmoUser ammoUser = weapon?.TryGetComp<CompAmmoUser>();
+            return CurrentProjectile(weapon, weapon?.TryGetComp<CompAmmoUser>());
+        }
+
+        /// <summary>
+        /// As above, for callers that already hold the comp — scoring paths resolve it once
+        /// and would otherwise pay for the lookup two or three times per candidate weapon.
+        /// </summary>
+        public static ThingDef CurrentProjectile(ThingWithComps weapon, CompAmmoUser ammoUser)
+        {
             if (ammoUser != null)
             {
                 // An empty magazine leaves CurrentAmmo pointing at the spent round — nothing

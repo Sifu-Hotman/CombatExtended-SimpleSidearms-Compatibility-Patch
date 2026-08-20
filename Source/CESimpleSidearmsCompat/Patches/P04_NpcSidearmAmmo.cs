@@ -28,6 +28,12 @@ namespace CESimpleSidearmsCompat.Patches
             {
                 return;
             }
+            // The pawnkind's CE ammo policy, if it has one: forced category, then a weighted
+            // roll over the faction's categories, then generateAllowChance. Letting CE apply
+            // it is what keeps SS-generated sidearms in the same ammo economy as the primary
+            // CE generated a moment earlier — otherwise every one of them carries the default
+            // round and faction AP/incendiary loadouts stop at the primary weapon.
+            LoadoutPropertiesExtension loadoutProps = pawn.kindDef?.GetModExtension<LoadoutPropertiesExtension>();
 
             bool changed = false;
             foreach (ThingWithComps weapon in pawn.inventory.innerContainer.OfType<ThingWithComps>().Where(t => t.def.IsWeapon).ToList())
@@ -43,7 +49,15 @@ namespace CESimpleSidearmsCompat.Patches
                 // squad would otherwise spawn with loaded primaries and empty sidearms.
                 if (ammoUser.HasMagazine && ammoUser.CurMagCount <= 0)
                 {
-                    ammoUser.ResetAmmoCount();
+                    if (loadoutProps != null)
+                    {
+                        // Picks the ammo AND fills the magazine, and handles !UseAmmo itself.
+                        loadoutProps.LoadWeaponWithRandAmmo(weapon);
+                    }
+                    else
+                    {
+                        ammoUser.ResetAmmoCount();
+                    }
                     changed = true;
                 }
                 // Spare ammo is what the ammo system gates.

@@ -14,9 +14,21 @@ namespace CESimpleSidearmsCompat.Patches
     /// weapons (zeroed accuracy, ammo-driven damage, reload downtime). These patches make
     /// SS's DPS ranking use CE's stat model while preserving SS's speed-bias semantics.
     /// </summary>
+    /// <summary>
+    /// Scoring runs per tick per warming-up pawn per carried weapon, so every stat read here
+    /// uses RimWorld's own one-tick cache rather than a full StatWorker evaluation. Nothing
+    /// these stats depend on — quality, attachments, damage — can change inside a tick.
+    /// </summary>
+    internal static class StatCache
+    {
+        internal const int Ticks = 1;
+    }
+
     [HarmonyPatch(typeof(StatCalculator), nameof(StatCalculator.RangedSpeed))]
     public static class StatCalculator_RangedSpeed_Patch
     {
+        private const int StatCacheTicks = StatCache.Ticks;
+
         // Fold reload downtime into the cycle time so slow-reloading weapons rank lower.
         // Also feeds SS's AverageSpeedRanged, keeping the bias baseline consistent.
         [HarmonyPostfix]
@@ -32,12 +44,14 @@ namespace CESimpleSidearmsCompat.Patches
             {
                 return;
             }
-            float reloadTime = weapon.GetStatValue(CE_StatDefOf.ReloadTime);
+            float reloadTime = weapon.GetStatValue(CE_StatDefOf.ReloadTime, cacheStaleAfterTicks: StatCacheTicks);
             if (reloadTime <= 0f)
             {
                 return;
             }
-            float burst = Math.Max(1, weapon.def.Verbs?.FirstOrDefault()?.burstShotCount ?? 1);
+            // Live verb props, matching CEDps and SS's own RangedSpeed — def.Verbs[0] is the
+            // static value and disagrees on weapons CE swaps verbs for (under-barrel launchers).
+            float burst = Math.Max(1, weapon.GetComp<CompEquippable>()?.PrimaryVerb?.verbProps?.burstShotCount ?? 1);
             float burstsPerMag = Math.Max(1f, magSize / burst);
             __result += reloadTime / burstsPerMag;
         }
@@ -94,11 +108,11 @@ namespace CESimpleSidearmsCompat.Patches
         /// </summary>
         internal static float CEHitFactor(ThingWithComps weapon, float distance)
         {
-            float spreadDegrees = weapon.GetStatValue(CE_StatDefOf.ShotSpread);
-            float swayFactor = weapon.GetStatValue(CE_StatDefOf.SwayFactor);
+            float spreadDegrees = weapon.GetStatValue(CE_StatDefOf.ShotSpread, cacheStaleAfterTicks: StatCache.Ticks);
+            float swayFactor = weapon.GetStatValue(CE_StatDefOf.SwayFactor, cacheStaleAfterTicks: StatCache.Ticks);
             Pawn carrier = CompatUtil.CarrierOf(weapon);
             float shootingAccuracy = carrier != null
-                ? Mathf.Min(carrier.GetStatValue(StatDefOf.ShootingAccuracyPawn), MaxShootingAccuracy)
+                ? Mathf.Min(carrier.GetStatValue(StatDefOf.ShootingAccuracyPawn, cacheStaleAfterTicks: StatCache.Ticks), MaxShootingAccuracy)
                 : MaxShootingAccuracy; // unknown shooter: score the weapon on its own spread
             float angularErrorDegrees = spreadDegrees + Mathf.Max(0f, MaxShootingAccuracy - shootingAccuracy) * swayFactor;
             float lateralMissCells = distance * angularErrorDegrees * 0.01745f;
@@ -107,7 +121,7 @@ namespace CESimpleSidearmsCompat.Patches
 
         internal static float CEDps(ThingWithComps weapon, CompAmmoUser ammoUser, VerbProperties atkProps, float speedBias, float averageSpeed)
         {
-            ThingDef projectile = CompatUtil.CurrentProjectile(weapon) ?? atkProps.defaultProjectile;
+            ThingDef projectile = CompatUtil.CurrentProjectile(weapon, ammoUser) ?? atkProps.defaultProjectile;
             float damage = projectile?.projectile?.GetDamageAmount(weapon) ?? 0f;
             int pellets = (projectile?.projectile as ProjectilePropertiesCE)?.pelletCount ?? 1;
             damage *= Math.Max(1, pellets);
