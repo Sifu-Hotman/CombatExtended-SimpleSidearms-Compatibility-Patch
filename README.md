@@ -41,30 +41,24 @@ These individual feature modules were made to improve the experience between the
 
 ## FAQ
 
-**Is this "CE compatible"?**
-It *is* the CE compatibility patch. Combat Extended and Simple Sidearms both
-work fine on their own; this mod is what makes them work *together*. Nothing
-else needs patching.
-
-**Do I need both mods?**
-Yes: Harmony, Combat Extended, and Simple Sidearms. This mod does nothing on its
-own.
+**CE compatible?**
+I'm not answering that. 
 
 **Can I add or remove it mid-save?**
 Both are safe. The only thing it writes to a save is CE hold-records, which CE
 itself purges and tolerates.
 
 **Does it change balance?**
-No. Every fix restores behavior one of the two mods already has — nothing is
-rebalanced, no new mechanics. The optional
-[Loadouts](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts)
-and [Tactics](https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics)
-modules are where new behavior lives, and they are separate downloads.
+It makes the game easier in the sense that 2 core combat mods are no longer broken in your save. 
+
+But in the traditional sense, no. 
 
 **Why is my pawn keeping a sidearm that isn't in its CE loadout?**
-By design. A weapon you remembered through the Simple Sidearms gizmo is explicit
-intent, so CE's loadout enforcement won't strip it. Forget the sidearm in the
-gizmo and CE will clear it out on the next pass.
+By design. *Every* weapon in the pawn's sidearm list is exempt from CE's loadout
+enforcement — not just the ones you set as default or forced — because putting a
+weapon in that list is itself the instruction to keep it. This includes weapons
+picked up as sidearms mid-battle. Forget the sidearm in the gizmo and CE clears
+it out on the next pass.
 
 **Does it work with Melee Animation?**
 Yes, with one known gap: animated execution kills bypass the melee-attack hook,
@@ -125,7 +119,9 @@ ln -s "$(pwd)" ~/.local/share/Steam/steamapps/common/RimWorld/Mods/CESimpleSidea
   vanilla-stat equivalent, so ranking compares damage-per-cycle. Speed-bias
   behavior from SS settings is preserved.
 - SS-remembered weapons are exempt from CE loadout drops by design: SS memory is
-  explicit user intent. Remove the sidearm from SS memory to let CE drop it.
+  explicit user intent. This covers every entry in the sidearm list, whatever
+  role it has (or hasn't) — battlefield pickups included. Remove the sidearm from
+  SS memory to let CE drop it.
 
 ## Credit
 
