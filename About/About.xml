@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
     <name>CombatExtended-SimpleSidearms Compatibility Patch</name>
-    <author>eebette</author>
-    <packageId>eebette.CESimpleSidearmsCompat</packageId>
+    <author>Sifu-Hotman</author>
+    <packageId>SifuHotman.CESimpleSidearmsCompat</packageId>
     <supportedVersions>
         <li>1.6</li>
     </supportedVersions>
-    <description>[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2890901044][img]https://raw.githubusercontent.com/CombatExtended-Continued/CombatExtended/master/Media/Badge_CE_compatible.png[/img][/url] [img]https://raw.githubusercontent.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_Suite.png[/img] [img]https://raw.githubusercontent.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_Patch.png[/img]
+    <description>[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2890901044][img]https://raw.githubusercontent.com/CombatExtended-Continued/CombatExtended/master/Media/Badge_CE_compatible.png[/img][/url] [img]https://raw.githubusercontent.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_Suite.png[/img] [img]https://raw.githubusercontent.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_Patch.png[/img]
 
 RimWorld compatibility mod making [url=https://github.com/CombatExtended-Continued/CombatExtended]Combat Extended[/url] and [url=https://github.com/PeteTimesSix/SimpleSidearms]Simple Sidearms[/url] work together.
 
@@ -37,16 +37,16 @@ Harmony → Combat Extended → Simple Sidearms → this mod.
 [b]The CE + Simple Sidearms suite[/b] — two optional modules that sit on top of this patch and require it. This patch only fixes core incompatibilities; enhancements live in these instead.
 [table]
 [tr][th]Module[/th][th]What it does[/th][/tr]
-[tr][td][url=https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts][img]https://raw.githubusercontent.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_Loadouts.png[/img][/url][/td][td]Synchronizes CE Loadouts with SS memory/gizmo.[/td][/tr]
-[tr][td][url=https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Tactics][img]https://raw.githubusercontent.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_Tactics.png[/img][/url][/td][td]Sensible tweaks to nonsense pawn behavior when CE + SS run together.[/td][/tr]
+[tr][td][url=https://github.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Loadouts][img]https://raw.githubusercontent.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_Loadouts.png[/img][/url][/td][td]Synchronizes CE Loadouts with SS memory/gizmo.[/td][/tr]
+[tr][td][url=https://github.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Tactics][img]https://raw.githubusercontent.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_Tactics.png[/img][/url][/td][td]Sensible tweaks to nonsense pawn behavior when CE + SS run together.[/td][/tr]
 [/table]
 
 [b]Standalone[/b] — none of these need this patch, or each other.
 [table]
 [tr][th]Mod[/th][th]What it does[/th][/tr]
-[tr][td][url=https://github.com/eebette/Better-Attack-Orders-for-Simple-Sidearms][img]https://raw.githubusercontent.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_BAO.png[/img][/url][/td][td]Adds sidearm attack orders to the right-click target menu.[/td][/tr]
-[tr][td][url=https://github.com/eebette/Pawns-Optimize-Weapon-Quality][img]https://raw.githubusercontent.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_POWQ.png[/img][/url][/td][td]Pawns upgrade their held guns when a higher-quality copy is available.[/td][/tr]
-[tr][td][url=https://github.com/eebette/Universal-Patch-for-More-Materials][img]https://raw.githubusercontent.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_UPMM.png[/img][/url][/td][td]Adds materials from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3055040889]More Materials[/url] to non-vanilla recipes.[/td][/tr]
+[tr][td][url=https://github.com/Sifu-Hotman/Better-Attack-Orders-for-Simple-Sidearms][img]https://raw.githubusercontent.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_BAO.png[/img][/url][/td][td]Adds sidearm attack orders to the right-click target menu.[/td][/tr]
+[tr][td][url=https://github.com/Sifu-Hotman/Pawns-Optimize-Weapon-Quality][img]https://raw.githubusercontent.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_POWQ.png[/img][/url][/td][td]Pawns upgrade their held guns when a higher-quality copy is available.[/td][/tr]
+[tr][td][url=https://github.com/Sifu-Hotman/Universal-Patch-for-More-Materials][img]https://raw.githubusercontent.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Patch/main/Media/Badge_UPMM.png[/img][/url][/td][td]Adds materials from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3055040889]More Materials[/url] to non-vanilla recipes.[/td][/tr]
 [/table]
 
 [h1]FAQ[/h1]
@@ -60,7 +60,7 @@ Yep.
 It makes the game easier in the sense that 2 core combat mods are no longer broken in your save. But in the traditional sense, no.
 
 [b]Why is my pawn keeping a sidearm that isn't in its CE loadout?[/b]
-Pawns won't automatically drop any weapon Simple Sidearms remembers. Forget it in the SS gizmo to let CE drop it. Use the [url=https://github.com/eebette/CombatExtended-SimpleSidearms-Compatibility-Loadouts]Loadouts module[/url] for synchronization between the CE Loadout and SS inventory.
+Pawns won't automatically drop any weapon Simple Sidearms remembers. Forget it in the SS gizmo to let CE drop it. Use the [url=https://github.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Loadouts]Loadouts module[/url] for synchronization between the CE Loadout and SS inventory.
 
 [b]AI?[/b]
 This mod was engineered with the help of an AI Coding Assistant (Claude Code, Fable 5, Max effort). The amount of researching and deep-diving the compatibility interfaces of both mods would have been insurmountable without it.

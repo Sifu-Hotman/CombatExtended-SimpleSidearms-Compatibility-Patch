@@ -202,7 +202,7 @@ namespace CESSCompatTestStaging
             results.Add($"  \"patchedCanUseUsPerWeaponSet\": {Measure(canUse):F3}");
 
             // Same process, same save: drop the patch's Harmony patches and measure stock SS.
-            new Harmony("eebette.CESSCompatBench").UnpatchAll("eebette.CESimpleSidearmsCompat");
+            new Harmony("SifuHotman.CESSCompatBench").UnpatchAll("SifuHotman.CESimpleSidearmsCompat");
             Log.Message("[CEBench] Compat patches removed; measuring stock Simple Sidearms.");
 
             double stockSelection = Measure(selection);

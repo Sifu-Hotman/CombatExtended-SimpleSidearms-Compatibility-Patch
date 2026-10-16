@@ -9,7 +9,7 @@ namespace CESimpleSidearmsCompat
 {
     public static class Bootstrap
     {
-        public const string HarmonyId = "eebette.CESimpleSidearmsCompat";
+        public const string HarmonyId = "SifuHotman.CESimpleSidearmsCompat";
         private const string LogPrefix = "[CE+SimpleSidearms] ";
         private static bool patched;
 

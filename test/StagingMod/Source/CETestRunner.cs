@@ -303,7 +303,7 @@ namespace CESSCompatTestStaging
         {
             try
             {
-                bool tacticsActive = ModsConfig.IsActive("eebette.CESimpleSidearmsCompat.Tactics")
+                bool tacticsActive = ModsConfig.IsActive("SifuHotman.CESimpleSidearmsCompat.Tactics")
                     || Harmony.GetAllPatchedMethods().Any(m =>
                         Harmony.GetPatchInfo(m)?.Owners.Any(o => o.Contains("CESimpleSidearmsCompat.Tactics")) ?? false);
                 Type mod = GenTypes.GetTypeInAnyAssembly("CESSCompatTactics.TacticsMod");
@@ -345,7 +345,7 @@ namespace CESSCompatTestStaging
                 // Two independent sentinels: the packageId (renameable) and the live
                 // Harmony owner list (survives a packageId rename — its own rename would
                 // still slip through, but both moving in one release is a smaller target).
-                bool loadoutsActive = ModsConfig.IsActive("eebette.CESimpleSidearmsCompat.Loadouts")
+                bool loadoutsActive = ModsConfig.IsActive("SifuHotman.CESimpleSidearmsCompat.Loadouts")
                     || Harmony.GetAllPatchedMethods().Any(m =>
                         Harmony.GetPatchInfo(m)?.Owners.Any(o => o.Contains("CESimpleSidearmsCompat.Loadouts")) ?? false);
                 Type mod = GenTypes.GetTypeInAnyAssembly("CESimpleSidearmsCompat.Loadouts.LoadoutsMod");
@@ -781,7 +781,7 @@ namespace CESSCompatTestStaging
                                 // Literal rather than Bootstrap.HarmonyId: the staging mod
                                 // deliberately has no reference to the product assembly, and
                                 // the census should key on the id as actually registered.
-                                return info != null && info.Owners.Contains("eebette.CESimpleSidearmsCompat");
+                                return info != null && info.Owners.Contains("SifuHotman.CESimpleSidearmsCompat");
                             })
                             .ToList();
                         // 22 distinct methods today: SidearmCapacity x2 (capacity gate, retrieval-search
@@ -793,7 +793,7 @@ namespace CESSCompatTestStaging
                         // ">=" so an upstream adding a third SelfConsume declaration cannot
                         // fail the census.
                         return (mine.Count >= 22,
-                            $"methods patched by eebette.CESimpleSidearmsCompat={mine.Count} (want >= 22): "
+                            $"methods patched by SifuHotman.CESimpleSidearmsCompat={mine.Count} (want >= 22): "
                             + string.Join(", ", mine.Select(m => m.DeclaringType?.Name + "." + m.Name).OrderBy(n => n)));
                     }),
                 }

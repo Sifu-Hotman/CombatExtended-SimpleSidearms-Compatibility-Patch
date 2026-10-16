@@ -58,7 +58,7 @@ Runner discipline (2026-08-28 machinery, ported from the Loadouts module's suite
 - **Every phase carries a `state` dump** (memory, carried, preferences, primary,
   bulk, job) for forensics; a scenario-specific colonist is followed by default.
 - **Phase 0 of every scenario is the patch census**: reflection over Harmony for
-  methods patched by `eebette.CESimpleSidearmsCompat` (>= 23 today). A Prepare
+  methods patched by `SifuHotman.CESimpleSidearmsCompat` (>= 23 today). A Prepare
   that quietly skipped, a Bootstrap per-class failure, or a TargetMethods that
   resolved nothing shows up before any behavioral phase runs half-patched.
 - **Isolated sweep**: `./test/run-isolated.sh <scenario> <save>` runs every phase
