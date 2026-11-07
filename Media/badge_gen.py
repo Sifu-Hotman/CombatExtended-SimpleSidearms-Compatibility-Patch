@@ -183,8 +183,6 @@ if __name__ == "__main__":
     render(os.path.join(HERE, "Badge_Patch.png"), "COMPATIBILITY PATCH", (196, 204, 218, 255), rifle)
     render(os.path.join(HERE, "Badge_Loadouts.png"), "LOADOUTS MODULE", (72, 134, 202, 255), rifle)
     render(os.path.join(HERE, "Badge_Tactics.png"), "TACTICS MODULE", (84, 142, 74, 255), rifle)
-    render_preview(os.path.join(HERE, "..", "About", "Preview.png"),
-                   "COMPATIBILITY PATCH", (196, 204, 218, 255), rifle)
     # Distribute the full badge set to sibling repos so their READMEs can
     # cross-link with relative paths (personal tooling — skipped when absent).
     import shutil
