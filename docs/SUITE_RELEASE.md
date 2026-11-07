@@ -40,7 +40,7 @@ are already green (patch: cetest1–4; Loadouts: supply1–2).
 
 ## Prepared assets checklist (all done)
 
-- [x] About/Preview.png in both repos (512×512, `Media/badge_gen.py`)
+- [x] About/Preview.png: Patch 16:9 banner, hand-made; modules 512×512 via `Media/badge_gen.py`
 - [x] Workshop description drafts in both repos (`docs/WORKSHOP_DESCRIPTION.bbcode`)
 - [x] Dependency IDs wired in both About.xml (patch's Workshop ID pending step 3)
 - [x] LICENSE (MIT) in both repos
