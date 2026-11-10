@@ -1,7 +1,7 @@
 # CombatExtended-SimpleSidearms Compatibility Patch
 
 [![Latest Release](https://img.shields.io/github/v/release/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Patch?label=Latest%20Release)](https://github.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Patch/releases)
-<!-- Steam Workshop badge goes here at publish -->
+[![Steam Workshop](https://img.shields.io/steam/subscriptions/3835112661?label=Steam%20Workshop&logo=steam)](https://steamcommunity.com/sharedfiles/filedetails/?id=3835112661)
 
 [![Combat Extended Compatible](Media/Badge_CE_compatible.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2890901044)
 [![CE + Simple Sidearms Compatibility Suite](Media/Badge_Suite.png)](#my-other-mods)
