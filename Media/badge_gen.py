@@ -144,39 +144,6 @@ def render(path, subtitle, accent=None, rifle=None):
     print("wrote", path)
 
 
-def render_preview(path, subtitle, accent, rifle):
-    """512x512 Workshop preview: big emblem over stacked title lines."""
-    P = 4
-    W = H = 512 * P
-    img = Image.new("RGBA", (W, H), (12, 12, 12, 255))
-    d = ImageDraw.Draw(img)
-    cx, cy, r = 256 * P, 190 * P, 140 * P
-    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=BLACK, outline=accent, width=8 * P)
-
-    def paste_glyph(m, gx, gy, target_w):
-        sc = target_w / m.width
-        g = m.resize((int(m.width * sc), int(m.height * sc)), Image.LANCZOS)
-        img.paste(WHITE, (int(gx - g.width / 2), int(gy - g.height / 2)), g)
-
-    paste_glyph(rifle, cx, 150 * P, 176 * P)
-    dd = ImageDraw.Draw(img)
-    draw_pistol(dd, (256 - 54) * P, 208 * P, 1.75 * P, flip=True)
-
-    f = ImageFont.truetype(FONT, 34 * P)
-    plh = sum(f.getmetrics())
-    ytop = 358 * P
-    for i, (text, color) in enumerate([
-        ("COMBAT EXTENDED", WHITE),
-        ("+ SIMPLE SIDEARMS", WHITE),
-        (subtitle, accent),
-    ]):
-        w = dd.textlength(text, font=f)
-        dd.text(((W - w) / 2, ytop + i * plh), text, font=f, fill=color)
-
-    img.resize((512, 512), Image.LANCZOS).save(path)
-    print("wrote", path)
-
-
 if __name__ == "__main__":
     rifle = extract_rifle()
     render(os.path.join(HERE, "Badge_Suite.png"), "COMPATIBILITY SUITE", None, rifle)
@@ -197,13 +164,3 @@ if __name__ == "__main__":
             for name in badge_set:
                 shutil.copy(os.path.join(HERE, name), os.path.join(media, name))
             print("distributed badges ->", media)
-
-    loadouts_about = os.path.expanduser("~/Projects/CombatExtended-SimpleSidearms-Compatibility-Loadouts/About")
-    if os.path.isdir(loadouts_about):
-        render_preview(os.path.join(loadouts_about, "Preview.png"),
-                       "LOADOUTS MODULE", (72, 134, 202, 255), rifle)
-    tactics_about = os.path.expanduser(
-        "~/Projects/CombatExtended-SimpleSidearms-Compatibility-Tactics/About")
-    if os.path.isdir(tactics_about):
-        render_preview(os.path.join(tactics_about, "Preview.png"),
-                       "TACTICS MODULE", (84, 142, 74, 255), rifle)
