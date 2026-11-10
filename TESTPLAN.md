@@ -43,6 +43,10 @@ Most of this plan runs unattended via `test/run-assert.sh <scenario> <save>`
 ./test/verdict.py test/SaveData/test-results-<scenario>.json   # judge + pretty-print
 ```
 
+Environment overrides for every `test/run-*.sh`: `RIMWORLD=/path/to/game-binary` runs against another
+game build, for example a 1.7 depot copy, and `SAVEDATA=/path/to/profile` uses another isolated profile
+directory. Defaults are the Steam install and the repo's `test/SaveData`.
+
 Runner discipline (2026-08-28 machinery, ported from the Loadouts module's suite):
 
 - **Checks never latch wrongly.** Positive checks latch on first pass; *negative*

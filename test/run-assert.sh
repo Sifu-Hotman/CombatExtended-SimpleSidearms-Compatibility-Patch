@@ -16,11 +16,11 @@ SCENARIO="${1:?scenario (cetest1..4)}"
 SAVE="${2:?save name}"
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-RIMWORLD="$HOME/.local/share/Steam/steamapps/common/RimWorld/RimWorldLinux"
+RIMWORLD="${RIMWORLD:-$HOME/.local/share/Steam/steamapps/common/RimWorld/RimWorldLinux}"
 # GS_WRAP: launch inside gamescope's nested compositor — immune to the desktop's
 # display state (owner gaming via Proton, mode-list churn, XF86VidMode crashes).
 GS=(gamescope -W 1600 -H 900 --)
-SAVEDATA="$REPO/test/SaveData"
+SAVEDATA="${SAVEDATA:-$REPO/test/SaveData}"
 RESULT="$SAVEDATA/test-results-$SCENARIO.json"
 
 if [[ "${SKIP_BUILD:-0}" != "1" ]]; then

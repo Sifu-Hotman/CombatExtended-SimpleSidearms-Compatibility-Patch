@@ -12,9 +12,9 @@ set -euo pipefail
 LABEL="${1:-cebench}"
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-RIMWORLD="$HOME/.local/share/Steam/steamapps/common/RimWorld/RimWorldLinux"
+RIMWORLD="${RIMWORLD:-$HOME/.local/share/Steam/steamapps/common/RimWorld/RimWorldLinux}"
 GS=(gamescope -W 1600 -H 900 --)
-SAVEDATA="$REPO/test/SaveData"
+SAVEDATA="${SAVEDATA:-$REPO/test/SaveData}"
 RESULT="$SAVEDATA/bench-results-$LABEL.json"
 
 if [[ "${SKIP_BUILD:-0}" != "1" ]]; then
