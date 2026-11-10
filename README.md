@@ -7,8 +7,8 @@
 [![CE + Simple Sidearms Compatibility Suite](Media/Badge_Suite.png)](#my-other-mods)
 ![CE + Simple Sidearms Compatibility Patch](Media/Badge_Patch.png)
 
-RimWorld compatibility mod making [Combat Extended](https://github.com/CombatExtended-Continued/CombatExtended)
-and [Simple Sidearms](https://github.com/PeteTimesSix/SimpleSidearms) work together.
+RimWorld compatibility mod making [Combat Extended](https://steamcommunity.com/sharedfiles/filedetails/?id=2890901044)
+and [Simple Sidearms](https://steamcommunity.com/sharedfiles/filedetails/?id=927155256) work together.
 
 See [My other mods](#my-other-mods) for additional modules to create a cohesive game experience while using both CE and
 SS together.
