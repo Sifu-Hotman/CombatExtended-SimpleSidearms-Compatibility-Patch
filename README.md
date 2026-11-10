@@ -7,8 +7,8 @@
 [![CE + Simple Sidearms Compatibility Suite](Media/Badge_Suite.png)](#my-other-mods)
 ![CE + Simple Sidearms Compatibility Patch](Media/Badge_Patch.png)
 
-RimWorld compatibility mod making [Combat Extended](https://github.com/CombatExtended-Continued/CombatExtended)
-and [Simple Sidearms](https://github.com/PeteTimesSix/SimpleSidearms) work together.
+RimWorld compatibility mod making [Combat Extended](https://steamcommunity.com/sharedfiles/filedetails/?id=2890901044)
+and [Simple Sidearms](https://steamcommunity.com/sharedfiles/filedetails/?id=927155256) work together.
 
 See [My other mods](#my-other-mods) for additional modules to create a cohesive game experience while using both CE and
 SS together.
@@ -44,24 +44,24 @@ in these instead.
 
 <table>
 <tr><th width="300">Module</th><th width="540">What it does</th></tr>
-<tr><td width="300"><a href="https://github.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Loadouts"><img src="Media/Badge_Loadouts.png" width="300" alt="Compatibility Module - Loadouts"></a></td><td width="540">Synchronizes CE Loadouts with SS memory/gizmo.</td></tr>
-<tr><td width="300"><a href="https://github.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Tactics"><img src="Media/Badge_Tactics.png" width="300" alt="Compatibility Module - Tactics"></a></td><td width="540">Sensible tweaks to nonsense pawn behavior when CE + SS run together.</td></tr>
+<tr><td width="300"><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3837111431"><img src="Media/Badge_Loadouts.png" width="300" alt="Compatibility Module - Loadouts"></a></td><td width="540">Synchronizes CE Loadouts with SS memory/gizmo.</td></tr>
+<tr><td width="300"><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3837121355"><img src="Media/Badge_Tactics.png" width="300" alt="Compatibility Module - Tactics"></a></td><td width="540">Sensible tweaks to nonsense pawn behavior when CE + SS run together.</td></tr>
 </table>
 
 ### Expanded Materials patches
 
 <table>
 <tr><th width="300">Mod</th><th width="540">What it does</th></tr>
-<tr><td width="300"><a href="https://github.com/Sifu-Hotman/More-Mod-Patches-for-Expanded-Materials-Metals"><img src="Media/Badge_MMP.png" width="300" alt="Expanded Materials - Metals: Mod Patches"></a></td><td width="540">Extends <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3333419387">Expanded Materials - Metals</a> to support additional mods.</td></tr>
-<tr><td width="300"><a href="https://github.com/Sifu-Hotman/More-Mod-Patches-for-Expanded-Materials-Masonry"><img src="Media/Badge_MMMas.png" width="300" alt="Expanded Materials - Masonry: Mod Patches"></a></td><td width="540">Extends <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3662913084">Expanded Materials - Masonry</a> to support additional mods.</td></tr>
+<tr><td width="300"><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3820650181"><img src="Media/Badge_MMP.png" width="300" alt="Expanded Materials - Metals: Mod Patches"></a></td><td width="540">Extends <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3333419387">Expanded Materials - Metals</a> to support additional mods.</td></tr>
+<tr><td width="300"><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3820640496"><img src="Media/Badge_MMMas.png" width="300" alt="Expanded Materials - Masonry: Mod Patches"></a></td><td width="540">Extends <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3662913084">Expanded Materials - Masonry</a> to support additional mods.</td></tr>
 </table>
 
 ### Standalone
 
 <table>
 <tr><th width="300">Mod</th><th width="540">What it does</th></tr>
-<tr><td width="300"><a href="https://github.com/Sifu-Hotman/Better-Attack-Orders-for-Simple-Sidearms"><img src="Media/Badge_BAO.png" width="300" alt="Better Attack Orders for Simple Sidearms"></a></td><td width="540">Adds sidearm attack orders to the right-click target menu.</td></tr>
-<tr><td width="300"><a href="https://github.com/Sifu-Hotman/Pawns-Optimize-Weapon-Quality"><img src="Media/Badge_POWQ.png" width="300" alt="Pawns Optimize Weapon Quality"></a></td><td width="540">Pawns will upgrade their held guns when a higher-quality copy is available.</td></tr>
+<tr><td width="300"><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3822791071"><img src="Media/Badge_BAO.png" width="300" alt="Better Attack Orders for Simple Sidearms"></a></td><td width="540">Adds sidearm attack orders to the right-click target menu.</td></tr>
+<tr><td width="300"><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3837156241"><img src="Media/Badge_POWQ.png" width="300" alt="Pawns Optimize Weapon Quality"></a></td><td width="540">Pawns will upgrade their held guns when a higher-quality copy is available.</td></tr>
 </table>
 
 ## FAQ
@@ -84,7 +84,7 @@ But in the traditional sense, no.
 
 Pawns won't automatically drop any weapon Simple Sidearms remembers. Forget it in the SS gizmo to let CE drop it.
 
-Use the [Loadouts module](https://github.com/Sifu-Hotman/CombatExtended-SimpleSidearms-Compatibility-Loadouts) for
+Use the [Loadouts module](https://steamcommunity.com/sharedfiles/filedetails/?id=3837111431) for
 synchronization between the CE Loadout and SS inventory.
 
 **AI?**
