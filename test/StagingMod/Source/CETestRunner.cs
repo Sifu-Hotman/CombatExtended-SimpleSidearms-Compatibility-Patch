@@ -348,29 +348,26 @@ namespace CESSCompatTestStaging
                 bool loadoutsActive = ModsConfig.IsActive("SifuHotman.CESimpleSidearmsCompat.Loadouts")
                     || Harmony.GetAllPatchedMethods().Any(m =>
                         Harmony.GetPatchInfo(m)?.Owners.Any(o => o.Contains("CESimpleSidearmsCompat.Loadouts")) ?? false);
-                Type mod = GenTypes.GetTypeInAnyAssembly("CESimpleSidearmsCompat.Loadouts.LoadoutsMod");
-                object settings = mod?.GetProperty("Settings")?.GetValue(null);
-                if (settings == null)
+                if (!loadoutsActive)
                 {
-                    if (loadoutsActive)
-                    {
-                        // The mod is in the list but the reflection missed — a silent return
-                        // here means every CETEST scenario runs with the Loadouts projections
-                        // still active, which is exactly the contamination this method exists
-                        // to prevent. Fail loud so a rename breaks the suite, not the results.
-                        Log.Error("[CETest] Loadouts module is ACTIVE but its settings type was not "
-                                  + "found (renamed again?) — scenarios are contaminated by its patches.");
-                    }
                     return;
                 }
-                FieldInfo field = settings.GetType().GetField("loadoutWeaponsAsSidearms");
-                if (field == null)
+                // The toggle is per colony since Loadouts d359f51: a scribed GameComponent flag.
+                Type compType = GenTypes.GetTypeInAnyAssembly("CESimpleSidearmsCompat.Loadouts.LoadoutsSessionComponent");
+                GameComponent comp = compType == null ? null
+                    : Current.Game?.components?.FirstOrDefault(c => compType.IsInstanceOfType(c));
+                FieldInfo field = compType?.GetField("loadoutWeaponsAsSidearms");
+                if (comp == null || field == null)
                 {
-                    Log.Error("[CETest] Loadouts settings found but 'loadoutWeaponsAsSidearms' is gone — "
-                              + "cannot switch the module off; scenarios are contaminated by its patches.");
+                    // The mod is in the list but the reflection missed — a silent return
+                    // here means every CETEST scenario runs with the Loadouts projections
+                    // still active, which is exactly the contamination this method exists
+                    // to prevent. Fail loud so a rename breaks the suite, not the results.
+                    Log.Error("[CETest] Loadouts module is ACTIVE but its session toggle was not "
+                              + "found (renamed again?) — scenarios are contaminated by its patches.");
                     return;
                 }
-                field.SetValue(settings, false);
+                field.SetValue(comp, false);
                 Log.Message("[CETest] Loadouts module switched off (in-memory) for this run.");
             }
             catch (Exception e)

@@ -20,9 +20,9 @@ SCENARIO="${1:?scenario (cetest1..4)}"
 SAVE="${2:?save name}"
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-RIMWORLD="$HOME/.local/share/Steam/steamapps/common/RimWorld/RimWorldLinux"
+RIMWORLD="${RIMWORLD:-$HOME/.local/share/Steam/steamapps/common/RimWorld/RimWorldLinux}"
 GS=(gamescope -W 1600 -H 900 --)
-SAVEDATA="$REPO/test/SaveData"
+SAVEDATA="${SAVEDATA:-$REPO/test/SaveData}"
 
 if [[ "${SKIP_BUILD:-0}" != "1" ]]; then
     dotnet build "$REPO/Source/CESimpleSidearmsCompat/CESimpleSidearmsCompat.csproj" -c Release
